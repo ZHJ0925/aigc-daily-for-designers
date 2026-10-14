@@ -490,24 +490,33 @@ function getReportDate() {
   if (m) return new Date(+m[1], +m[2] - 1, +m[3]);
   return new Date();
 }
+function shanghaiTodayParts() {
+  var parts = {};
+  new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Asia/Shanghai',
+    year: 'numeric', month: 'numeric', day: 'numeric'
+  }).formatToParts(new Date()).forEach(function (p) { parts[p.type] = p.value; });
+  return { y: +parts.year, m: +parts.month, d: +parts.day };
+}
 var reportDate = getReportDate();
-var y = reportDate.getFullYear();
-var m = reportDate.getMonth() + 1;
-var d = reportDate.getDate();
-var todayKey = y + '.' + m + '.' + d;
-var today = new Date(); today.setHours(0,0,0,0);
+var reportKey = reportDate.getFullYear() + '.' + (reportDate.getMonth() + 1) + '.' + reportDate.getDate();
+var cal = shanghaiTodayParts();
+var calendarKey = cal.y + '.' + cal.m + '.' + cal.d;
+var calendarToday = new Date(cal.y, cal.m - 1, cal.d);
 var container = document.getElementById('dateSwitcher');
 if (container) {
   var days = [];
   for (var i = 6; i >= 0; i--) {
-    var dt = new Date(today);
-    dt.setDate(dt.getDate() - i);
+    var dt = new Date(calendarToday);
+    dt.setDate(calendarToday.getDate() - i);
+    var key = dt.getFullYear() + '.' + (dt.getMonth()+1) + '.' + dt.getDate();
     days.push({
       label: (dt.getMonth()+1) + '.' + dt.getDate(),
-      key: dt.getFullYear() + '.' + (dt.getMonth()+1) + '.' + dt.getDate(),
-      href: dt.getFullYear() + '.' + (dt.getMonth()+1) + '.' + dt.getDate() + '日报.html',
-      isToday: dt.getFullYear() + '.' + (dt.getMonth()+1) + '.' + dt.getDate() === todayKey,
-      isFuture: dt > today
+      key: key,
+      href: key + '日报.html',
+      isReport: key === reportKey,
+      isCalendarToday: key === calendarKey,
+      isFuture: dt > calendarToday
     });
   }
   var leftArrow = document.createElement('span');
@@ -518,9 +527,9 @@ if (container) {
     var pill = document.createElement('a');
     pill.className = 'date-pill';
     pill.textContent = day.label;
-    if (day.isToday) pill.classList.add('active');
+    if (day.isReport) pill.classList.add('active');
     if (day.isFuture) pill.classList.add('future');
-    pill.href = day.isToday ? 'index.html' : day.href;
+    pill.href = day.isCalendarToday ? 'index.html' : day.href;
     container.appendChild(pill);
   });
 }
