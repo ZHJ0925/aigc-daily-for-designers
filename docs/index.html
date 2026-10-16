@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AIGC 设计日报</title>
+<meta http-equiv="refresh" content="0; url=2026.10.16.html">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="refresh" content="0; url=2026.10.15.html">
 <style>
   html,body{margin:0;min-height:100%;background:#070707;color:#DEDFEE;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}
   main{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center;gap:12px}
@@ -26,20 +26,17 @@
   function asciiHref(p) {
     return p.y + "." + p.m + "." + p.d + ".html";
   }
-  function cnHref(p) {
-    return p.y + "." + p.m + "." + p.d + "日报.html";
-  }
   function dayOffset(i) {
     var base = shanghaiToday();
     var dt = new Date(Date.UTC(base.y, base.m - 1, base.d));
     dt.setUTCDate(dt.getUTCDate() - i);
     return { y: dt.getUTCFullYear(), m: dt.getUTCMonth() + 1, d: dt.getUTCDate() };
   }
-  // 直接跳转，不先 fetch（公司内网页里 fetch 容易卡住导致黑屏）
   var today = shanghaiToday();
   var target = asciiHref(today);
+  var todayLink = document.getElementById("todayLink");
+  if (todayLink) todayLink.href = target;
   try { location.replace(target); } catch (e) {}
-  // 若 1.5 秒后还停在本页，露出手动入口
   setTimeout(function () {
     var box = document.getElementById("fallback");
     var links = document.getElementById("links");
@@ -52,8 +49,6 @@
       html += (i ? " · " : "") + '<a href="' + asciiHref(p) + '">' + label + "</a>";
     }
     links.innerHTML = html;
-    var a = document.getElementById("todayLink");
-    if (a) a.href = asciiHref(today);
   }, 1500);
 })();
 </script>
@@ -61,7 +56,7 @@
 <body>
 <main>
   <p id="msg">正在打开今日日报…</p>
-  <p><a id="todayLink" href="2026.10.15.html">点这里打开今日日报</a></p>
+  <p><a id="todayLink" href="2026.10.16.html">点这里打开今日日报</a></p>
   <div id="fallback" class="fallback">
     <p>如果没有自动跳转，可点上面的链接，或选最近几天：</p>
     <p id="links"></p>
