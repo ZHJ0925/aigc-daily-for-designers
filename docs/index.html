@@ -23,30 +23,52 @@
     }).formatToParts(new Date()).forEach(function (p) { parts[p.type] = p.value; });
     return { y: +parts.year, m: +parts.month, d: +parts.day };
   }
+  function addDays(parts, delta) {
+    var dt = new Date(Date.UTC(parts.y, parts.m - 1, parts.d + delta));
+    return { y: dt.getUTCFullYear(), m: dt.getUTCMonth() + 1, d: dt.getUTCDate() };
+  }
+  function dayOfWeek(parts) {
+    return new Date(Date.UTC(parts.y, parts.m - 1, parts.d)).getUTCDay();
+  }
   function asciiHref(p) {
     return p.y + "." + p.m + "." + p.d + ".html";
   }
-  function dayOffset(i) {
-    var base = shanghaiToday();
-    var dt = new Date(Date.UTC(base.y, base.m - 1, base.d));
-    dt.setUTCDate(dt.getUTCDate() - i);
-    return { y: dt.getUTCFullYear(), m: dt.getUTCMonth() + 1, d: dt.getUTCDate() };
+  function redirectTarget() {
+    var today = shanghaiToday();
+    var dow = dayOfWeek(today);
+    if (dow === 6) return addDays(today, -1);
+    if (dow === 0) return addDays(today, -2);
+    return today;
   }
-  var today = shanghaiToday();
-  var target = asciiHref(today);
-  var todayLink = document.getElementById("todayLink");
-  if (todayLink) todayLink.href = target;
+  var targetParts = redirectTarget();
+  var target = asciiHref(targetParts);
   try { location.replace(target); } catch (e) {}
+  function wireDom() {
+    var todayLink = document.getElementById("todayLink");
+    if (todayLink) todayLink.href = target;
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", wireDom);
+  } else {
+    wireDom();
+  }
   setTimeout(function () {
     var box = document.getElementById("fallback");
     var links = document.getElementById("links");
     if (!box || !links) return;
     box.style.display = "block";
     var html = "";
-    for (var i = 0; i < 7; i++) {
-      var p = dayOffset(i);
-      var label = i === 0 ? ("今日 " + p.m + "." + p.d) : (p.m + "." + p.d);
-      html += (i ? " · " : "") + '<a href="' + asciiHref(p) + '">' + label + "</a>";
+    var collected = 0;
+    var back = 0;
+    while (collected < 7) {
+      var p = addDays(targetParts, -back);
+      var dow = dayOfWeek(p);
+      if (dow !== 0 && dow !== 6) {
+        var label = collected === 0 ? ("今日 " + p.m + "." + p.d) : (p.m + "." + p.d);
+        html += (collected ? " · " : "") + '<a href="' + asciiHref(p) + '">' + label + "</a>";
+        collected++;
+      }
+      back++;
     }
     links.innerHTML = html;
   }, 1500);
