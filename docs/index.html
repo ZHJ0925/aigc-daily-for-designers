@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AIGC 设计日报</title>
-<meta http-equiv="refresh" content="0; url=2026.10.22.html">
+<meta http-equiv="refresh" content="0; url=2026.10.23.html">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <style>
   html,body{margin:0;min-height:100%;background:#070707;color:#DEDFEE;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}
@@ -33,10 +33,12 @@
     return { y: dt.getUTCFullYear(), m: dt.getUTCMonth() + 1, d: dt.getUTCDate() };
   }
   var today = shanghaiToday();
-  // weekend: fall back to that week's Friday (weekday-only publishing)
-  var wd = new Date(Date.UTC(today.y, today.m - 1, today.d)).getUTCDay();
-  if (wd === 6) today = dayOffset(1); else if (wd === 0) today = dayOffset(2);
+  // static default (baked at build time) = newest published report
+  var STATIC_DEFAULT = "2026.10.23.html";
   var target = asciiHref(today);
+  // weekend: go to the static default (newest report) instead of guessing Friday
+  var wd = new Date(Date.UTC(today.y, today.m - 1, today.d)).getUTCDay();
+  if (wd === 6 || wd === 0) target = STATIC_DEFAULT;
   var todayLink = document.getElementById("todayLink");
   if (todayLink) todayLink.href = target;
   try { location.replace(target); } catch (e) {}
@@ -59,7 +61,7 @@
 <body>
 <main>
   <p id="msg">正在打开今日日报…</p>
-  <p><a id="todayLink" href="2026.10.22.html">点这里打开今日日报</a></p>
+  <p><a id="todayLink" href="2026.10.23.html">点这里打开今日日报</a></p>
   <div id="fallback" class="fallback">
     <p>如果没有自动跳转，可点上面的链接，或选最近几天：</p>
     <p id="links"></p>
