@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026.10.24 的 AIGC 设计日报</title>
+<style>
+:root {
+  --bg:           #070707;
+  --bg-panel:     #14121f;
+  --bg-card:      #1D1F2C;
+  --bg-elev:      #252736;
+  --text:         #DEDFEE;
+  --text-2:       #9AA6B8;
+  --text-3:       #64748B;
+  --brand:        #6E29F5;
+  --brand-2:      #8A35FF;
+  --brand-3:      #C966F5;
+  --cyan:         #02F6F7;
+  --green:        #3DE887;
+  --border:       rgba(255,255,255,.07);
+  --border-2:     rgba(255,255,255,.14);
+  --border-brand: rgba(110,41,246,.32);
+  --gradient-brand: linear-gradient(110deg,#6e29f5 0%,#8a35ff 48%,#c966f5 100%);
+  --gradient-glow: radial-gradient(80% 60% at 50% 0%,rgba(110,41,246,.25) 0%,transparent 60%);
+  --shadow-glow:  0 12px 32px rgba(110,41,246,.18);
+  --radius:       16px;
+  --radius-lg:    24px;
+  --radius-pill:  120px;
+  --max-w:        1080px;
+  --sans:         -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", "Segoe UI", sans-serif;
+  --mono:         ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+body.light {
+  --bg:           #f5f5f8;
+  --bg-panel:     #ffffff;
+  --bg-card:      #ffffff;
+  --bg-elev:      #ffffff;
+  --text:         #1a1a1a;
+  --text-2:       #4a4a5e;
+  --text-3:       #6b6b7b;
+  --border:       rgba(0,0,0,.06);
+  --border-2:     rgba(0,0,0,.12);
+  --border-brand: rgba(110,41,246,.24);
+  --gradient-glow: radial-gradient(80% 60% at 50% 0%,rgba(110,41,246,.10) 0%,transparent 60%);
+  --shadow-glow:  0 12px 32px rgba(110,41,246,.12);
+}
+body.light::before {
+  background:
+    radial-gradient(60% 40% at 20% 0%, rgba(110,41,246,.08) 0%, transparent 50%),
+    radial-gradient(40% 30% at 90% 10%, rgba(2,246,247,.05) 0%, transparent 50%),
+    radial-gradient(50% 35% at 50% 100%, rgba(110,41,246,.05) 0%, transparent 50%);
+}
+body.light::after {
+  background-image: linear-gradient(rgba(0,0,0,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,.04) 1px, transparent 1px);
+  mask-image: radial-gradient(80% 60% at 50% 30%, black 0%, transparent 80%);
+}
+body.light .hero-badge { background: rgba(110,41,246,.10); color: #6E29F5; border-color: rgba(110,41,246,.24); }
+body.light .toc { background: rgba(245,245,248,.85); }
+body.light .editorial-inner { background: linear-gradient(135deg, rgba(110,41,246,.08) 0%, rgba(2,246,247,.03) 100%); }
+body.light .editorial-text strong { color: #6E29F5; }
+body.light .filter-inner { background: rgba(255,255,255,.8); }
+body.light .card-title { color: var(--text); }
+body.light .card-summary { color: var(--text-2); }
+body.light .card-insight { color: #6E29F5; background: rgba(110,41,246,.06); }
+body.light .card { background: linear-gradient(180deg, #ffffff 0%, #fafafe 100%); }
+body.light .date-pill { background: rgba(255,255,255,.7); }
+body.light .date-pill.active { background: #ffffff; color: #6E29F5; border-color: #6E29F5; box-shadow: 0 4px 14px rgba(110,41,246,.18); }
+body.light .date-nav-arrow:hover { background: rgba(0,0,0,.04); }
+body.light .toc-link:hover { background: rgba(110,41,246,.08); }
+body.light .theme-toggle { background: rgba(0,0,0,.04); }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.65;
+  overflow-x: clip;
+  position: relative;
+  min-height: 100vh;
+}
+body::before {
+  content: "";
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(60% 40% at 20% 0%, rgba(110,41,246,.18) 0%, transparent 50%),
+    radial-gradient(40% 30% at 90% 10%, rgba(2,246,247,.08) 0%, transparent 50%),
+    radial-gradient(50% 35% at 50% 100%, rgba(110,41,246,.10) 0%, transparent 50%);
+}
+body::after {
+  content: "";
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image: linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: radial-gradient(80% 60% at 50% 30%, black 0%, transparent 80%);
+}
+a { color: var(--cyan); text-decoration: none; }
+a:hover { color: var(--brand-3); }
+.hero { position: relative; z-index: 2; padding: 80px 32px 40px; text-align: center; }
+.hero-inner { max-width: var(--max-w); margin: 0 auto; }
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 18px;
+  background: rgba(110,41,246,.12);
+  border: 1px solid var(--border-brand);
+  border-radius: var(--radius-pill);
+  font-size: 12px; color: #C7A8FF; font-weight: 500;
+  margin-bottom: 24px;
+  letter-spacing: 0.04em;
+}
+.hero-badge .dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--green); box-shadow: 0 0 8px var(--green);
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse { 50% { opacity: .5; transform: scale(.9); } }
+.hero-title {
+  font-size: 56px; font-weight: 700; line-height: 1.1;
+  margin-bottom: 20px;
+  background: var(--gradient-brand);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.02em;
+}
+.hero-lead { font-size: 16px; color: var(--text-2); line-height: 1.7; max-width: 640px; margin: 0 auto 32px; }
+.hero-meta {
+  font-size: 12px; color: var(--text-3);
+  display: flex; gap: 24px; justify-content: center;
+  font-family: var(--mono); letter-spacing: 0.04em;
+}
+.editorial { position: relative; z-index: 2; max-width: var(--max-w); margin: 32px auto 0; padding: 0 32px; }
+.editorial-inner {
+  background: linear-gradient(135deg, rgba(110,41,246,.10) 0%, rgba(2,246,247,.04) 100%);
+  border: 1px solid var(--border-brand);
+  border-radius: var(--radius);
+  padding: 20px 28px;
+  display: flex; gap: 16px; align-items: flex-start;
+}
+.editorial-badge {
+  display: inline-block; padding: 4px 12px;
+  background: var(--gradient-brand); border-radius: var(--radius-pill);
+  font-size: 11px; font-weight: 600; color: white;
+  letter-spacing: 0.04em; flex-shrink: 0; margin-top: 2px;
+}
+.editorial-text { font-size: 14px; color: var(--text); line-height: 1.7; }
+.editorial-text strong { color: #C7A8FF; font-weight: 600; }
+.date-switcher { position: relative; z-index: 3; max-width: var(--max-w); margin: 32px auto 0; padding: 0 32px; }
+.date-switcher-inner {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 16px 0; overflow-x: auto; scrollbar-width: none;
+}
+.date-switcher-inner::-webkit-scrollbar { display: none; }
+.date-nav-arrow {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px; border-radius: 50%;
+  color: var(--text-2); cursor: pointer; user-select: none;
+  transition: all .2s ease;
+}
+.date-nav-arrow:hover { color: var(--text); background: rgba(255,255,255,.06); }
+.date-pill {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 56px; height: 36px; padding: 0 16px;
+  font-family: var(--mono); font-size: 13px; font-weight: 500;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border-2);
+  background: rgba(29,31,44,.4);
+  color: var(--text-2);
+  cursor: pointer; transition: all .25s ease;
+  white-space: nowrap; flex-shrink: 0;
+  text-decoration: none;
+}
+.date-pill:hover { color: var(--text); border-color: var(--border-brand); background: rgba(110,41,246,.08); }
+.date-pill.active {
+  background: var(--gradient-brand); color: white; border-color: transparent;
+  box-shadow: 0 4px 16px rgba(110,41,246,.4);
+}
+.date-pill.future { opacity: .35; pointer-events: none; }
+.toc {
+  position: sticky; top: 0; z-index: 10;
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  background: rgba(7,7,7,.85);
+  border-bottom: 1px solid var(--border);
+}
+.toc-inner {
+  max-width: var(--max-w); margin: 0 auto;
+  padding: 14px 32px;
+  display: flex; align-items: center; gap: 8px;
+  overflow-x: auto; scrollbar-width: none;
+}
+.toc-inner::-webkit-scrollbar { display: none; }
+.toc-label {
+  font-size: 11px; font-weight: 600;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--text-3); margin-right: 12px;
+  flex-shrink: 0; font-family: var(--mono);
+}
+.toc-link {
+  font-size: 13px; font-weight: 500;
+  padding: 6px 14px; border-radius: var(--radius-pill);
+  color: var(--text-2); white-space: nowrap;
+  transition: all .2s ease; flex-shrink: 0;
+}
+.toc-link:hover { color: var(--text); background: rgba(110,41,246,.12); }
+.theme-toggle {
+  margin-left: auto;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 36px; height: 36px; border-radius: 50%;
+  background: rgba(255,255,255,.04);
+  border: 1px solid var(--border-2);
+  color: var(--text-2); cursor: pointer;
+  transition: all .2s ease; flex-shrink: 0;
+}
+.theme-toggle:hover { color: var(--text); border-color: var(--border-brand); }
+.theme-toggle .icon-sun { display: none; }
+.theme-toggle .icon-moon { display: block; }
+.filter-bar { position: relative; z-index: 2; max-width: var(--max-w); margin: 0 auto; padding: 16px 32px; }
+.filter-inner {
+  display: flex; align-items: center; gap: 12px;
+  background: rgba(29,31,44,.5);
+  border: 1px solid var(--border-2);
+  border-radius: var(--radius-pill);
+  padding: 0 20px;
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+}
+.filter-search {
+  flex: 1; background: transparent; border: none; outline: none;
+  padding: 14px 0; font-size: 14px; color: var(--text);
+  font-family: var(--sans);
+}
+.filter-search::placeholder { color: var(--text-3); }
+.filter-count { font-size: 12px; color: var(--text-3); font-family: var(--mono); white-space: nowrap; }
+.main { position: relative; z-index: 2; max-width: var(--max-w); margin: 0 auto; padding: 24px 32px 64px; }
+.filter-noresult { display: none; text-align: center; padding: 60px 20px; color: var(--text-3); font-size: 14px; }
+.section { margin-bottom: 56px; }
+.section-header { text-align: left; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--border-2); }
+.section-title-cn {
+  font-size: 22px; font-weight: 600; color: var(--text);
+  margin-bottom: 6px; letter-spacing: -0.01em;
+}
+.section-title-cn::before {
+  content: ""; display: inline-block;
+  width: 4px; height: 18px;
+  background: var(--gradient-brand); border-radius: 2px;
+  margin-right: 10px; vertical-align: middle;
+  transform: translateY(-2px);
+}
+.section-desc { font-size: 12px; color: var(--text-3); font-family: var(--mono); letter-spacing: 0.04em; }
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 20px; }
+.card {
+  position: relative;
+  background: linear-gradient(180deg, rgba(29,31,44,.7) 0%, rgba(20,18,31,.7) 100%);
+  border: 1px solid var(--border-2); border-radius: var(--radius);
+  padding: 24px;
+  display: flex; flex-direction: column; gap: 12px;
+  transition: all .3s cubic-bezier(.2,.8,.2,1);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  overflow: hidden;
+}
+.card::before {
+  content: ""; position: absolute; inset: 0;
+  background: var(--gradient-glow); opacity: 0;
+  transition: opacity .3s; pointer-events: none;
+  border-radius: var(--radius);
+}
+.card:hover { border-color: var(--border-brand); transform: translateY(-4px); box-shadow: var(--shadow-glow); }
+.card:hover::before { opacity: 1; }
+.card-title { font-size: 17px; font-weight: 600; color: var(--text); line-height: 1.4; margin-top: 0; }
+.card-summary { font-size: 13px; color: var(--text-2); line-height: 1.7; }
+.card-insight {
+  font-size: 12px; color: #C7A8FF;
+  padding: 10px 14px;
+  background: rgba(110,41,246,.08);
+  border-left: 2px solid var(--brand);
+  border-radius: 0 6px 6px 0;
+  line-height: 1.6; margin-top: auto;
+}
+.card-link {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 12px; font-family: var(--mono); color: var(--cyan);
+  margin-top: 4px; transition: gap .2s;
+}
+.card-link:hover { gap: 8px; color: var(--brand-3); }
+.card-link::after { content: "→"; }
+.footer {
+  position: relative; z-index: 2;
+  max-width: var(--max-w); margin: 0 auto;
+  padding: 32px; border-top: 1px solid var(--border);
+}
+.footer-text {
+  text-align: center;
+  font-size: 12px; color: var(--text-3);
+  font-family: var(--mono); letter-spacing: 0.02em; line-height: 1.8;
+}
+@media (max-width: 768px) {
+  .hero { padding: 48px 20px 24px; }
+  .hero-title { font-size: 36px; }
+  .hero-lead { font-size: 14px; }
+  .editorial, .date-switcher, .filter-bar, .main, .footer { padding-left: 20px; padding-right: 20px; }
+  .editorial-inner { flex-direction: column; gap: 10px; padding: 16px 20px; }
+  .cards { grid-template-columns: 1fr; }
+  .section-title-cn { font-size: 18px; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge"><span class="dot"></span><span>AI · DESIGN · 硅基流动风格</span></div>
+    <h1 class="hero-title">2026.10.24 的 AIGC 设计日报</h1>
+    <p class="hero-lead">周六补刊：HTML 演示与 Figma 代码图层在收拢交付；Duo 多屏要分清动效与布局接口；生图/视频则把控位和样片流程写进工作流。</p>
+    <div class="hero-meta">
+      <span>BEIJING · 10.24</span>
+    <span>AI HOT · 优设 · 量子位 · 极客公园</span>
+    </div>
+  </div>
+</div>
+
+<section class="editorial">
+  <div class="editorial-inner">
+    <span class="editorial-badge">主编按语</span>
+    <p class="editorial-text">今日主线是<strong>把演示、画布与跨屏状态都写成可复用规格</strong>：优设用 DeepSeek/Gemini + PPT Skill 把汇报做成可编辑 HTML，设计周刊第二波则盯上 Figma Code Layers 与 Specs——设计稿、文档和 Agent 开始同屏协作；案例侧用 Aerial 把老电视改成无广告的 Apple TV 式桌面。基础干货回到 iPhone Duo 多屏：铰链角度只管动效，布局交给保留区域与 Arrangement。工程上 Replit 给上线应用配了能自查自修的 Monitoring Agent，OpenAI Decisions API 则把表情/路由这类微决策压到实时。工具区：量子位拆 MOSS-Image 的 JSON 布局控位，Kimi K3.1 Pro 把草图推进可编辑 3D，极客早知道记下 Seedance 2.5 4K「样片→正片」流程。站酷 AI 发现页近 72 小时带日期条目仍以活动/旧稿为主，未纳入精选。</p>
+  </div>
+</section>
+
+<nav class="date-switcher" aria-label="日期切换">
+  <div class="date-switcher-inner" id="dateSwitcher"></div>
+</nav>
+
+<nav class="toc">
+  <div class="toc-inner">
+    <span class="toc-label">目录</span><a class="toc-link" href="#sec-practice">AI 实战与教程</a><a class="toc-link" href="#sec-cases">案例灵感</a><a class="toc-link" href="#sec-basic">设计基础干货</a><a class="toc-link" href="#sec-agent">Agent 与编程实战</a><a class="toc-link" href="#sec-tools">AI 工具与产品</a>
+    <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="切换深色 / 浅色">
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg>
+    </button>
+  </div>
+</nav>
+<div class="filter-bar">
+  <div class="filter-inner">
+    <input type="search" class="filter-search" id="filterSearch" placeholder="搜索标题 / 来源 / 关键词…" aria-label="搜索" oninput="applyFilter()">
+    <span class="filter-count" id="filterCount"></span>
+  </div>
+</div>
+
+<main class="main">
+  <div class="filter-noresult" id="filterNoResult">未找到匹配的内容 🔍</div>
+
+  <section class="section" id="sec-practice">
+    <div class="section-header">
+      <div class="section-title-cn">AI 实战与教程</div>
+      <p class="section-desc">教程、工作流与 Prompt 落地</p>
+    </div>
+    <div class="cards" data-section="practice">
+      <article class="card">
+        <h3 class="card-title">HTML 取代 PPT？用 DeepSeek / Gemini + Skill 5 分钟出可编辑演示</h3>
+        <p class="card-summary">优设（约 2 天内）跟着「HTML 要取代 PPT」试了一圈：同一套需求分别喂给 DeepSeek、GPT、Gemini，DeepSeek 中文观感更干净，Gemini 完成度高但信息易堆满。关键不是一句 Prompt，而是先写清受众与约束，再让模型预留可编辑区；进阶则安装歸藏 guizang-ppt-skill（杂志风/瑞士风），或把 styles.refero.design 的设计规范 .md 丢给 Gemini 统一视觉。作者强调 Skill=可复用操作指南，Prompt=单次对话。</p>
+        <p class="card-insight">周报/评审演示先定「可编辑 HTML」交付物，再装一份团队视觉 Skill；别指望一句 Prompt 出终稿——先对齐大纲与主题色，再让 Agent 按 Skill 落地。</p>
+        <a class="card-link" href="https://www.uisdc.com/html-replaces-ppt" target="_blank" rel="noopener noreferrer">查看原文 · 优设网 · 前天</a>
+      </article>
+      <article class="card">
+        <h3 class="card-title">设计周刊第二波：Figma Code Layers、Specs 与 Make 录制流程</h3>
+        <p class="card-summary">优设周刊（约 2 天前）整理 Config India：Code Layers 公开测试，设计稿可转可交互代码原型，也能从 GitHub/本地/网页导入同屏对比；Figma Specs 给 Markdown、画面与技术细节共享空间，方便人与 Agent 共写需求；Make 接入 Payload 生成带 CMS/鉴权后台，并逐步提供 Gemini 4 Argon。「复制设计」入口挪到 Edit，还可 Record flow 把多页状态拷回 Design 图层（不带回交互）。同期收录 OpenPencil、PPT Lottie、Shotbase 等神器。</p>
+        <p class="card-insight">设计→原型评审时优先开 Code Layers/Specs：让 Agent 读同一份 Spec，少在聊天里贴截图；录制流程只当快照，别指望改 Design 自动回写 Make。</p>
+        <a class="card-link" href="https://www.uisdc.com/design-weekly-222" target="_blank" rel="noopener noreferrer">查看原文 · 优设网 · 前天</a>
+      </article>
+    </div>
+  </section>
+  <section class="section" id="sec-cases">
+    <div class="section-header">
+      <div class="section-title-cn">案例灵感</div>
+      <p class="section-desc">可借鉴的内容与产品案例</p>
+    </div>
+    <div class="cards" data-section="cases">
+      <article class="card">
+        <h3 class="card-title">Aerial 爆改老电视：无广告网格桌面对标 Apple TV</h3>
+        <p class="card-summary">优设（约 2 天前）介绍开源电视桌面 Aerial：砍掉推荐流，只留壁纸、时钟与规整应用网格，焦点浮起显示名称，内置航拍屏保并可扫码传相册。难点是厂商固件会抢回主页键——项目用默认桌面申请、守护与开机自启组合拳。作者给出 WorkBuddy 一句话安装提示词（读 agent.md 后本机跑 ADB），强调不卸载原厂桌面，随时可还原；另推 CleanYourTV 停用广告组件。</p>
+        <p class="card-insight">做客厅/大屏 UI：先砍信息噪音再谈动效；焦点态要放大+明示名称。用 Agent 装机时把「验收命令输出」写进 Prompt，避免只拿到步骤说明。</p>
+        <a class="card-link" href="https://www.uisdc.com/retro-tv-redesign" target="_blank" rel="noopener noreferrer">查看原文 · 优设网 · 前天</a>
+      </article>
+    </div>
+  </section>
+  <section class="section" id="sec-basic">
+    <div class="section-header">
+      <div class="section-title-cn">设计基础干货</div>
+      <p class="section-desc">拿掉 AI 依然成立的设计基础</p>
+    </div>
+    <div class="cards" data-section="basic">
+      <article class="card">
+        <h3 class="card-title">iPhone Duo 多屏体验：铰链、分屏、双窗口与外屏附件怎么拆</h3>
+        <p class="card-summary">优设陈子木（约 2 天前）据 Tech Talk《Leverage multiple displays and scenes》梳理：铰链状态（合上/半开/展平）与连续角度分工不同——吉他摇把变调只在半开读角度，退出须归零；连续视听可用 onHingeChange，控件避折痕与主从排布必须交给 Reserved Regions 与 Arrangement，别按角度硬编码。分屏多任务与同应用多窗口要分开验收；外屏不能新建窗口；CameraCaptureAccessory 做提词器须内屏全屏+相机会话+相机视图可见，并把用户 enabled 与系统 availability 解耦。</p>
+        <p class="card-insight">折叠/双屏评审清单：动效生命周期、布局接口边界、分屏 vs 双窗口、附件三项前提——写进设计规格，比再加一屏「概念图」管用。</p>
+        <a class="card-link" href="https://www.uisdc.com/multiple-displays-on-iphone-duo" target="_blank" rel="noopener noreferrer">查看原文 · 优设网 · 前天</a>
+      </article>
+    </div>
+  </section>
+  <section class="section" id="sec-agent">
+    <div class="section-header">
+      <div class="section-title-cn">Agent 与编程实战</div>
+      <p class="section-desc">Agent 编排、知识与上下文</p>
+    </div>
+    <div class="cards" data-section="agent">
+      <article class="card">
+        <h3 class="card-title">Replit Monitoring Agent：上线后自己查因、修、发版</h3>
+        <p class="card-summary">Replit（AI HOT · 10/22）把 App Monitoring 闭环：Agent 可读生产日志与指标，告警后调查根因、验证修复并可选自动发布，再邮件汇报变更。面向个人开发者与小团队——以前「用户说挂了」才知道，现在发布设置里打开 alerts / auto-fix / auto-publish 即可。官方把它放进「自主软件团队」叙事：从写代码扩展到值守与修复。</p>
+        <p class="card-insight">设计侧搭内部工具/小程序时，把「监控开关与自动发布权限」做成设置页一等公民；自动修要默认可关，并强制留下可读的变更摘要给人类复核。</p>
+        <a class="card-link" href="https://replit.com/blog/replit-monitoring-agent" target="_blank" rel="noopener noreferrer">查看原文 · Replit · AI HOT · 前天</a>
+      </article>
+      <article class="card">
+        <h3 class="card-title">OpenAI Decisions API：给实时交互做低延迟微决策</h3>
+        <p class="card-summary">OpenAI（AI HOT · 10/22）正式推出 Decisions API（GPT-6 Luna）：面向分类、路由、打分等有界答案，比 Responses 路径可快一个数量级。支持 predicate/choice/score，单请求最多 400 题，可接图与 JSON；并与 GPT-Live 原生联动——演示里根据用户话语为虚拟形象选表情。Box、Datadog、Sierra、Speak 等用它做单据路由、风险评分、客服下一步与语言学习打断。</p>
+        <p class="card-insight">做语音助手/数字人/客服流时，把「下一步动作、表情、是否追问」拆成 Decisions 问题清单，而不是整段自由生成；UI 上同步展示「正在判定」比干等更稳。</p>
+        <a class="card-link" href="https://openai.com/index/decisions-api" target="_blank" rel="noopener noreferrer">查看原文 · OpenAI · AI HOT · 前天</a>
+      </article>
+    </div>
+  </section>
+  <section class="section" id="sec-tools">
+    <div class="section-header">
+      <div class="section-title-cn">AI 工具与产品</div>
+      <p class="section-desc">设计相关工具与产品更新</p>
+    </div>
+    <div class="cards" data-section="tools">
+      <article class="card">
+        <h3 class="card-title">MOSS-Image：开源 5B 生图，用 JSON Layout 卡住海报排版</h3>
+        <p class="card-summary">量子位（10/23）报道模思智能/OpenMOSS 开源 MOSS-Image：强调去掉 AI 生成图训练以减轻「同质 AI 味」，上线数日海外下载破百万。对设计更关键的是中英密集文字、JSON Layout + Bounding Box 控位，以及最长约 4096 token 条件；社区已出 4/8 步加速、量化与各类 LoRA，并有 Prompt Enhancer Skill。文章也提 API 与桌面助手 MosMos。</p>
+        <p class="card-insight">电商主图/信息海报优先试「summary + items + bbox」结构化出图，少把整页构图押在一句自然语言；复杂稿再叠团队 LoRA 稳风格。</p>
+        <a class="card-link" href="https://www.qbitai.com/2026/10/504930.html" target="_blank" rel="noopener noreferrer">查看原文 · 量子位 · 昨天</a>
+      </article>
+      <article class="card">
+        <h3 class="card-title">Kimi K3.1 Pro：草图/参考图直出可编辑 3D，网页端上线 3D Make</h3>
+        <p class="card-summary">月之暗面（AI HOT · 10/23）发布 K3.1 Pro（约 3T 级、100 万上下文）与 Highspeed：强化编程、长程 Agent 与 3D 创作。可从文字、草图或参考图推断形体，写 Blender/CAD 脚本生成资产；kimi.com 与 App 上线 3D Make，支持预览、编辑、下载打印或导出视频/Live Photo。开放权重计划 11 月 4 日前放出。优设情报同日亦点到「草图可生成可编辑 3D」。</p>
+        <p class="card-insight">品牌 KV/包装预研可先丢草图进 3D Make 对空间关系，再导出给建模深化；别把跑分当选题——盯你能不能改拓扑与材质。</p>
+        <a class="card-link" href="https://www.kimi.com/blog/kimi-k3-1-pro" target="_blank" rel="noopener noreferrer">查看原文 · Kimi · AI HOT · 昨天</a>
+      </article>
+      <article class="card">
+        <h3 class="card-title">Seedance 2.5 4K：先 480P 样片打磨分镜，再出大荧幕正片</h3>
+        <p class="card-summary">极客公园早知道（10/24）记火山引擎发布 Seedance 2.5 4K：强化表情、微动作与纹理轮廓，10-bit 色深；支持 Draft 模式先用 480P 低成本验证分镜与镜头，确认后再生成 4K。目前 4K 定向邀请约 20 家影视工作室/导演做剧集与电影前期。同日亦见 Kimi 3D、iPhone Duo 交付等速览。</p>
+        <p class="card-insight">AI 视频工作流写成两段验收：样片阶段只评叙事与调度，正片阶段再评清晰度与色阶——避免一上来就烧 4K 额度试构图。</p>
+        <a class="card-link" href="https://www.geekpark.net/news/372858" target="_blank" rel="noopener noreferrer">查看原文 · 极客公园 · 今天</a>
+      </article>
+    </div>
+  </section>
+</main>
+
+
+<footer class="footer">
+    <p class="footer-text">
+    共 9 条精选资讯 · 数据源：AI HOT + 优设网 + 站酷 + 量子位 + 极客公园<br>
+    报告窗口：10.21–10.24 · 生成于 10.25（周日补 10.24）· 站酷近 72h 无新增可收录设计向稿；sec-bigtech / sec-career 宁缺毋滥今日从缺</p>
+</footer>
+
+
+<script>
+function getReportDate() {
+  var m = document.title.match(/(\d{4})\.(\d{1,2})\.(\d{1,2})/);
+  if (m) return new Date(+m[1], +m[2] - 1, +m[3]);
+  return new Date();
+}
+function shanghaiTodayParts() {
+  var parts = {};
+  new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Asia/Shanghai',
+    year: 'numeric', month: 'numeric', day: 'numeric'
+  }).formatToParts(new Date()).forEach(function (p) { parts[p.type] = p.value; });
+  return { y: +parts.year, m: +parts.month, d: +parts.day };
+}
+var reportDate = getReportDate();
+var reportKey = reportDate.getFullYear() + '.' + (reportDate.getMonth() + 1) + '.' + reportDate.getDate();
+var cal = shanghaiTodayParts();
+var calendarKey = cal.y + '.' + cal.m + '.' + cal.d;
+var calendarToday = new Date(cal.y, cal.m - 1, cal.d);
+var container = document.getElementById('dateSwitcher');
+if (container) {
+  var days = [];
+  for (var i = 6; i >= 0; i--) {
+    var dt = new Date(calendarToday);
+    dt.setDate(calendarToday.getDate() - i);
+    var key = dt.getFullYear() + '.' + (dt.getMonth()+1) + '.' + dt.getDate();
+    days.push({
+      label: (dt.getMonth()+1) + '.' + dt.getDate(),
+      key: key,
+      href: key + '日报.html',
+      isReport: key === reportKey,
+      isCalendarToday: key === calendarKey,
+      isFuture: dt > calendarToday
+    });
+  }
+  var leftArrow = document.createElement('span');
+  leftArrow.className = 'date-nav-arrow';
+  leftArrow.textContent = '◀';
+  container.appendChild(leftArrow);
+  days.forEach(function(day) {
+    var pill = document.createElement('a');
+    pill.className = 'date-pill';
+    pill.textContent = day.label;
+    if (day.isReport) pill.classList.add('active');
+    if (day.isFuture) pill.classList.add('future');
+    pill.href = day.isCalendarToday ? 'index.html' : day.href;
+    container.appendChild(pill);
+  });
+}
+function applyFilter() {
+  var q = (document.getElementById('filterSearch').value || '').toLowerCase().trim();
+  var cards = document.querySelectorAll('.card');
+  var visible = 0;
+  cards.forEach(function(c) {
+    if (!q) { c.style.display = ''; visible++; return; }
+    var text = c.textContent.toLowerCase();
+    if (text.indexOf(q) >= 0) { c.style.display = ''; visible++; }
+    else { c.style.display = 'none'; }
+  });
+  var sections = document.querySelectorAll('.section');
+  var nr = document.getElementById('filterNoResult');
+  var anyVisible = 0;
+  sections.forEach(function(sec) {
+    var secCards = sec.querySelectorAll('.card');
+    var hasVisible = false;
+    secCards.forEach(function(c) { if (c.style.display !== 'none') hasVisible = true; });
+    sec.style.display = (hasVisible || !q) ? '' : 'none';
+    if (hasVisible) anyVisible++;
+  });
+  nr.style.display = (!q || anyVisible > 0) ? 'none' : 'block';
+  var fc = document.getElementById('filterCount');
+  fc.textContent = q ? (visible + ' / ' + cards.length) : '';
+}
+function toggleTheme() {
+  var isLight = document.body.classList.toggle('light');
+  try { localStorage.setItem('aigc-theme', isLight ? 'light' : 'dark'); } catch (e) {}
+  syncToggleIcon(isLight);
+}
+function syncToggleIcon(isLight) {
+  var btn = document.getElementById('themeToggle');
+  if (!btn) return;
+  btn.querySelector('.icon-moon').style.display = isLight ? 'none' : 'block';
+  btn.querySelector('.icon-sun').style.display = isLight ? 'block' : 'none';
+  btn.setAttribute('aria-label', isLight ? '切换深色模式' : '切换浅色模式');
+}
+(function() {
+  var saved = null;
+  try { saved = localStorage.getItem('aigc-theme'); } catch (e) {}
+  var isLight = saved === 'light' || (saved === null && window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches);
+  if (isLight) document.body.classList.add('light');
+  syncToggleIcon(isLight);
+})();
+applyFilter();
+</script>
+</body>
+</html>
