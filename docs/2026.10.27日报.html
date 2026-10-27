@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026.10.27 的 AIGC 设计日报</title>
+<style>
+:root {
+  --bg:           #070707;
+  --bg-panel:     #14121f;
+  --bg-card:      #1D1F2C;
+  --bg-elev:      #252736;
+  --text:         #DEDFEE;
+  --text-2:       #9AA6B8;
+  --text-3:       #64748B;
+  --brand:        #6E29F5;
+  --brand-2:      #8A35FF;
+  --brand-3:      #C966F5;
+  --cyan:         #02F6F7;
+  --green:        #3DE887;
+  --border:       rgba(255,255,255,.07);
+  --border-2:     rgba(255,255,255,.14);
+  --border-brand: rgba(110,41,246,.32);
+  --gradient-brand: linear-gradient(110deg,#6e29f5 0%,#8a35ff 48%,#c966f5 100%);
+  --gradient-glow: radial-gradient(80% 60% at 50% 0%,rgba(110,41,246,.25) 0%,transparent 60%);
+  --shadow-glow:  0 12px 32px rgba(110,41,246,.18);
+  --radius:       16px;
+  --radius-lg:    24px;
+  --radius-pill:  120px;
+  --max-w:        1080px;
+  --sans:         -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", "Segoe UI", sans-serif;
+  --mono:         ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+body.light {
+  --bg:           #f5f5f8;
+  --bg-panel:     #ffffff;
+  --bg-card:      #ffffff;
+  --bg-elev:      #ffffff;
+  --text:         #1a1a1a;
+  --text-2:       #4a4a5e;
+  --text-3:       #6b6b7b;
+  --border:       rgba(0,0,0,.06);
+  --border-2:     rgba(0,0,0,.12);
+  --border-brand: rgba(110,41,246,.24);
+  --gradient-glow: radial-gradient(80% 60% at 50% 0%,rgba(110,41,246,.10) 0%,transparent 60%);
+  --shadow-glow:  0 12px 32px rgba(110,41,246,.12);
+}
+body.light::before {
+  background:
+    radial-gradient(60% 40% at 20% 0%, rgba(110,41,246,.08) 0%, transparent 50%),
+    radial-gradient(40% 30% at 90% 10%, rgba(2,246,247,.05) 0%, transparent 50%),
+    radial-gradient(50% 35% at 50% 100%, rgba(110,41,246,.05) 0%, transparent 50%);
+}
+body.light::after {
+  background-image: linear-gradient(rgba(0,0,0,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,.04) 1px, transparent 1px);
+  mask-image: radial-gradient(80% 60% at 50% 30%, black 0%, transparent 80%);
+}
+body.light .hero-badge { background: rgba(110,41,246,.10); color: #6E29F5; border-color: rgba(110,41,246,.24); }
+body.light .toc { background: rgba(245,245,248,.85); }
+body.light .editorial-inner { background: linear-gradient(135deg, rgba(110,41,246,.08) 0%, rgba(2,246,247,.03) 100%); }
+body.light .editorial-text strong { color: #6E29F5; }
+body.light .filter-inner { background: rgba(255,255,255,.8); }
+body.light .card-title { color: var(--text); }
+body.light .card-summary { color: var(--text-2); }
+body.light .card-insight { color: #6E29F5; background: rgba(110,41,246,.06); }
+body.light .card { background: linear-gradient(180deg, #ffffff 0%, #fafafe 100%); }
+body.light .date-pill { background: rgba(255,255,255,.7); }
+body.light .date-pill.active { background: #ffffff; color: #6E29F5; border-color: #6E29F5; box-shadow: 0 4px 14px rgba(110,41,246,.18); }
+body.light .date-nav-arrow:hover { background: rgba(0,0,0,.04); }
+body.light .toc-link:hover { background: rgba(110,41,246,.08); }
+body.light .theme-toggle { background: rgba(0,0,0,.04); }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.65;
+  overflow-x: clip;
+  position: relative;
+  min-height: 100vh;
+}
+body::before {
+  content: "";
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(60% 40% at 20% 0%, rgba(110,41,246,.18) 0%, transparent 50%),
+    radial-gradient(40% 30% at 90% 10%, rgba(2,246,247,.08) 0%, transparent 50%),
+    radial-gradient(50% 35% at 50% 100%, rgba(110,41,246,.10) 0%, transparent 50%);
+}
+body::after {
+  content: "";
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image: linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: radial-gradient(80% 60% at 50% 30%, black 0%, transparent 80%);
+}
+a { color: var(--cyan); text-decoration: none; }
+a:hover { color: var(--brand-3); }
+.hero { position: relative; z-index: 2; padding: 80px 32px 40px; text-align: center; }
+.hero-inner { max-width: var(--max-w); margin: 0 auto; }
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 18px;
+  background: rgba(110,41,246,.12);
+  border: 1px solid var(--border-brand);
+  border-radius: var(--radius-pill);
+  font-size: 12px; color: #C7A8FF; font-weight: 500;
+  margin-bottom: 24px;
+  letter-spacing: 0.04em;
+}
+.hero-badge .dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--green); box-shadow: 0 0 8px var(--green);
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse { 50% { opacity: .5; transform: scale(.9); } }
+.hero-title {
+  font-size: 56px; font-weight: 700; line-height: 1.1;
+  margin-bottom: 20px;
+  background: var(--gradient-brand);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.02em;
+}
+.hero-lead { font-size: 16px; color: var(--text-2); line-height: 1.7; max-width: 640px; margin: 0 auto 32px; }
+.hero-meta {
+  font-size: 12px; color: var(--text-3);
+  display: flex; gap: 24px; justify-content: center;
+  font-family: var(--mono); letter-spacing: 0.04em;
+}
+.editorial { position: relative; z-index: 2; max-width: var(--max-w); margin: 32px auto 0; padding: 0 32px; }
+.editorial-inner {
+  background: linear-gradient(135deg, rgba(110,41,246,.10) 0%, rgba(2,246,247,.04) 100%);
+  border: 1px solid var(--border-brand);
+  border-radius: var(--radius);
+  padding: 20px 28px;
+  display: flex; gap: 16px; align-items: flex-start;
+}
+.editorial-badge {
+  display: inline-block; padding: 4px 12px;
+  background: var(--gradient-brand); border-radius: var(--radius-pill);
+  font-size: 11px; font-weight: 600; color: white;
+  letter-spacing: 0.04em; flex-shrink: 0; margin-top: 2px;
+}
+.editorial-text { font-size: 14px; color: var(--text); line-height: 1.7; }
+.editorial-text strong { color: #C7A8FF; font-weight: 600; }
+.date-switcher { position: relative; z-index: 3; max-width: var(--max-w); margin: 32px auto 0; padding: 0 32px; }
+.date-switcher-inner {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 16px 0; overflow-x: auto; scrollbar-width: none;
+}
+.date-switcher-inner::-webkit-scrollbar { display: none; }
+.date-nav-arrow {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px; border-radius: 50%;
+  color: var(--text-2); cursor: pointer; user-select: none;
+  transition: all .2s ease;
+}
+.date-nav-arrow:hover { color: var(--text); background: rgba(255,255,255,.06); }
+.date-pill {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 56px; height: 36px; padding: 0 16px;
+  font-family: var(--mono); font-size: 13px; font-weight: 500;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border-2);
+  background: rgba(29,31,44,.4);
+  color: var(--text-2);
+  cursor: pointer; transition: all .25s ease;
+  white-space: nowrap; flex-shrink: 0;
+  text-decoration: none;
+}
+.date-pill:hover { color: var(--text); border-color: var(--border-brand); background: rgba(110,41,246,.08); }
+.date-pill.active {
+  background: var(--gradient-brand); color: white; border-color: transparent;
+  box-shadow: 0 4px 16px rgba(110,41,246,.4);
+}
+.date-pill.future { opacity: .35; pointer-events: none; }
+.toc {
+  position: sticky; top: 0; z-index: 10;
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  background: rgba(7,7,7,.85);
+  border-bottom: 1px solid var(--border);
+}
+.toc-inner {
+  max-width: var(--max-w); margin: 0 auto;
+  padding: 14px 32px;
+  display: flex; align-items: center; gap: 8px;
+  overflow-x: auto; scrollbar-width: none;
+}
+.toc-inner::-webkit-scrollbar { display: none; }
+.toc-label {
+  font-size: 11px; font-weight: 600;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--text-3); margin-right: 12px;
+  flex-shrink: 0; font-family: var(--mono);
+}
+.toc-link {
+  font-size: 13px; font-weight: 500;
+  padding: 6px 14px; border-radius: var(--radius-pill);
+  color: var(--text-2); white-space: nowrap;
+  transition: all .2s ease; flex-shrink: 0;
+}
+.toc-link:hover { color: var(--text); background: rgba(110,41,246,.12); }
+.theme-toggle {
+  margin-left: auto;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 36px; height: 36px; border-radius: 50%;
+  background: rgba(255,255,255,.04);
+  border: 1px solid var(--border-2);
+  color: var(--text-2); cursor: pointer;
+  transition: all .2s ease; flex-shrink: 0;
+}
+.theme-toggle:hover { color: var(--text); border-color: var(--border-brand); }
+.theme-toggle .icon-sun { display: none; }
+.theme-toggle .icon-moon { display: block; }
+.filter-bar { position: relative; z-index: 2; max-width: var(--max-w); margin: 0 auto; padding: 16px 32px; }
+.filter-inner {
+  display: flex; align-items: center; gap: 12px;
+  background: rgba(29,31,44,.5);
+  border: 1px solid var(--border-2);
+  border-radius: var(--radius-pill);
+  padding: 0 20px;
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+}
+.filter-search {
+  flex: 1; background: transparent; border: none; outline: none;
+  padding: 14px 0; font-size: 14px; color: var(--text);
+  font-family: var(--sans);
+}
+.filter-search::placeholder { color: var(--text-3); }
+.filter-count { font-size: 12px; color: var(--text-3); font-family: var(--mono); white-space: nowrap; }
+.main { position: relative; z-index: 2; max-width: var(--max-w); margin: 0 auto; padding: 24px 32px 64px; }
+.filter-noresult { display: none; text-align: center; padding: 60px 20px; color: var(--text-3); font-size: 14px; }
+.section { margin-bottom: 56px; }
+.section-header { text-align: left; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--border-2); }
+.section-title-cn {
+  font-size: 22px; font-weight: 600; color: var(--text);
+  margin-bottom: 6px; letter-spacing: -0.01em;
+}
+.section-title-cn::before {
+  content: ""; display: inline-block;
+  width: 4px; height: 18px;
+  background: var(--gradient-brand); border-radius: 2px;
+  margin-right: 10px; vertical-align: middle;
+  transform: translateY(-2px);
+}
+.section-desc { font-size: 12px; color: var(--text-3); font-family: var(--mono); letter-spacing: 0.04em; }
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 20px; }
+.card {
+  position: relative;
+  background: linear-gradient(180deg, rgba(29,31,44,.7) 0%, rgba(20,18,31,.7) 100%);
+  border: 1px solid var(--border-2); border-radius: var(--radius);
+  padding: 24px;
+  display: flex; flex-direction: column; gap: 12px;
+  transition: all .3s cubic-bezier(.2,.8,.2,1);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  overflow: hidden;
+}
+.card::before {
+  content: ""; position: absolute; inset: 0;
+  background: var(--gradient-glow); opacity: 0;
+  transition: opacity .3s; pointer-events: none;
+  border-radius: var(--radius);
+}
+.card:hover { border-color: var(--border-brand); transform: translateY(-4px); box-shadow: var(--shadow-glow); }
+.card:hover::before { opacity: 1; }
+.card-title { font-size: 17px; font-weight: 600; color: var(--text); line-height: 1.4; margin-top: 0; }
+.card-summary { font-size: 13px; color: var(--text-2); line-height: 1.7; }
+.card-insight {
+  font-size: 12px; color: #C7A8FF;
+  padding: 10px 14px;
+  background: rgba(110,41,246,.08);
+  border-left: 2px solid var(--brand);
+  border-radius: 0 6px 6px 0;
+  line-height: 1.6; margin-top: auto;
+}
+.card-link {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 12px; font-family: var(--mono); color: var(--cyan);
+  margin-top: 4px; transition: gap .2s;
+}
+.card-link:hover { gap: 8px; color: var(--brand-3); }
+.card-link::after { content: "→"; }
+.footer {
+  position: relative; z-index: 2;
+  max-width: var(--max-w); margin: 0 auto;
+  padding: 32px; border-top: 1px solid var(--border);
+}
+.footer-text {
+  text-align: center;
+  font-size: 12px; color: var(--text-3);
+  font-family: var(--mono); letter-spacing: 0.02em; line-height: 1.8;
+}
+@media (max-width: 768px) {
+  .hero { padding: 48px 20px 24px; }
+  .hero-title { font-size: 36px; }
+  .hero-lead { font-size: 14px; }
+  .editorial, .date-switcher, .filter-bar, .main, .footer { padding-left: 20px; padding-right: 20px; }
+  .editorial-inner { flex-direction: column; gap: 10px; padding: 16px 20px; }
+  .cards { grid-template-columns: 1fr; }
+  .section-title-cn { font-size: 18px; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge"><span class="dot"></span><span>AI · DESIGN · 硅基流动风格</span></div>
+    <h1 class="hero-title">2026.10.27 的 AIGC 设计日报</h1>
+    <p class="hero-lead">周二动手包：Agent 逆向会议室电视与灯光控制台；Kimi K3.1 Pro 把 3D/动效审美拉到对标线；折叠屏相机适配继续补课，Terra / Gamma 5 / Krea / WorkBuddy 把电脑操作与协作入口再推近一步。</p>
+    <div class="hero-meta">
+      <span>BEIJING · 10.27</span>
+    <span>AI HOT · 优设 · 量子位 · 极客公园</span>
+    </div>
+  </div>
+</div>
+
+<section class="editorial">
+  <div class="editorial-inner">
+    <span class="editorial-badge">主编按语</span>
+    <p class="editorial-text">周二这条线更「能动手」：<strong>一边是 Agent 把现实设备改成自己想要的交互</strong>，一边是旗舰模型把 3D / 动效审美拉到能正面对照海外的位置。优设卡兹克上午交出两篇：用 Codex / Claude 清掉会议室电视开机广告、重做品牌屏保与首页；同日深度测 Kimi K3.1 Pro——机械键盘爆炸视图、户型图+装修图漫游、公司平面+随手视频建模，动效开场片与半小时科普片一轮直出，网页/App/Work/Code 已可用。基础干货继续补折叠屏：iPhone Duo 相机要从「虚拟前置」与「朝向协调器」写清自拍定义，预览布局和 videoGravity 拆开画。职业侧是 About a Designer 系列续篇，初创团队像一个个有个性的人。大厂/工具：OpenAI GPT-6.1 Terra 把电脑操作与写作压到更便宜更快；Gamma 5 重做构思—设计—编辑链路并改善导出预览；Krea 推出 Premiere 插件；量子位侧 WorkBuddy 正式进企微侧边栏，上下文与交付回流会话/微盘。站酷 AI 发现页近 72h 带日期条目为设计周活动向，按规则跳过；极客公园首页仍 403，column/74 可读，但最新早知道偏硬件娱乐，Seedance/Kimi 早知道链接已在去重名单。</p>
+  </div>
+</section>
+
+<nav class="date-switcher" aria-label="日期切换">
+  <div class="date-switcher-inner" id="dateSwitcher"></div>
+</nav>
+
+<nav class="toc">
+  <div class="toc-inner">
+    <span class="toc-label">目录</span><a class="toc-link" href="#sec-practice">AI 实战与教程</a><a class="toc-link" href="#sec-bigtech">大厂 AI 场景</a><a class="toc-link" href="#sec-agent">Agent 与编程实战</a><a class="toc-link" href="#sec-career">职业与观点</a><a class="toc-link" href="#sec-basic">设计基础干货</a><a class="toc-link" href="#sec-tools">AI 工具与产品</a>
+    <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="切换深色 / 浅色">
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg>
+    </button>
+  </div>
+</nav>
+<div class="filter-bar">
+  <div class="filter-inner">
+    <input type="search" class="filter-search" id="filterSearch" placeholder="搜索标题 / 来源 / 关键词…" aria-label="搜索" oninput="applyFilter()">
+    <span class="filter-count" id="filterCount"></span>
+  </div>
+</div>
+
+<main class="main">
+  <div class="filter-noresult" id="filterNoResult">未找到匹配的内容 🔍</div>
+
+
+  <section class="section" id="sec-practice">
+    <div class="section-header">
+      <div class="section-title-cn">AI 实战与教程</div>
+      <p class="section-desc">教程、工作流与 Prompt 落地</p>
+    </div>
+    <div class="cards" data-section="practice">
+      <article class="card">
+        <h3 class="card-title">不会编程也能改硬件：用 Codex / Claude 逆向身边电子设备</h3>
+        <p class="card-summary">优设数字生命卡兹克（今天）把手把手流程写开：把电视型号与「清广告 + 重做桌面」丢给 Codex，开 ADB 授权后连上设备；再调用品牌动效 Skill 生成粒子流动屏保，保留投屏/信号源/设置入口，并把原影视首页收进「更多应用」。同法复刻四间会议室电视；视频组用 Claude+REA 逆向四盏补光灯做统一网页控制台（还埋了音游彩蛋），内容部用 Codex 把索尼与 Pocket 3 合成多机位预览台并挂进飞书中台。作者叠甲：不同品牌接口不一，改系统前先备份可恢复路径。</p>
+        <p class="card-insight">UED 可把「哪里不爽改哪里」写成低成本专项：先列会议室/拍摄间 Top3 反人类交互，选一台试点，要求 Agent 交付「保留核心功能 + 品牌化桌面」验收清单，再批量复刻。</p>
+        <a class="card-link" href="https://www.uisdc.com/ai-reverse-engineering" target="_blank" rel="noopener noreferrer">查看原文 · 优设网 · 今天</a>
+      </article>
+      <article class="card">
+        <h3 class="card-title">Kimi K3.1 Pro 实测：3D 建模与动效审美逼近海外旗舰</h3>
+        <p class="card-summary">优设卡兹克（今天）通宵测视觉向任务：K3.1 Pro（2.8T、100 万上下文，权重约 11/4 前开源）在果冻物理、高精度机械键盘（白模/X-ray/爆炸视图）、户型图+装修风格 First-person 漫游、公司平面图+随手拍视频对齐家具等 3D 任务上体感接近 GPT-6 Astra；动效开场片、站点宣传片与「打印机原理」「信息论」科普片（近半小时）一轮直出，完成度惊喜但细节仍需人工校对。网页版、App、Kimi Work/Code 已上线，API 约为 Astra 约 1/5 价，另有 Highspeed 2–3 倍速。</p>
+        <p class="card-insight">提案/展陈先用「平面图+风格参考+评审 Agent 循环」模板跑一版可漫游 3D；动效片当 Storyboard 初稿，成片前单独过色彩、节奏与事实核对三关。</p>
+        <a class="card-link" href="https://www.uisdc.com/kimi-flagship-review" target="_blank" rel="noopener noreferrer">查看原文 · 优设网 · 今天</a>
+      </article>
+    </div>
+  </section>
+  <section class="section" id="sec-bigtech">
+    <div class="section-header">
+      <div class="section-title-cn">大厂 AI 场景</div>
+      <p class="section-desc">大厂落地与产品整合</p>
+    </div>
+    <div class="cards" data-section="bigtech">
+      <article class="card">
+        <h3 class="card-title">OpenAI GPT-6.1 Terra：更快更便宜的电脑操作与写作</h3>
+        <p class="card-summary">OpenAI（昨天，AI HOT）发布 GPT-6.1 Terra，强调细粒度视觉推理 + 精准电脑操作，并改善更自然的写作；官方称适合起草方案、读技术图纸、填表、剪辑类日常电脑任务。Agents’ Last Exam / OSWorld 等电脑代理评测相对上代 Terra 成本约降到三分之一量级且分更高；API 标价约 $1/M input、$5/M output（缓存输入更低）。ChatGPT Work 与 Codex 的 Plus/Pro/Enterprise/Edu 已可用，模型名 <code>gpt-6.1-terra</code>。</p>
+        <p class="card-insight">把「重复电脑活」拆成可验收步骤（读标注图→填表→导出），优先用 Terra 跑批量；高难度代码/复杂审美仍留给更强旗舰，避免一张模型打天下。</p>
+        <a class="card-link" href="https://openai.com/index/introducing-gpt-6-1-terra/" target="_blank" rel="noopener noreferrer">查看原文 · OpenAI · AI HOT · 昨天</a>
+      </article>
+    </div>
+  </section>
+  <section class="section" id="sec-agent">
+    <div class="section-header">
+      <div class="section-title-cn">Agent 与编程实战</div>
+      <p class="section-desc">Agent 工作流与工程实践</p>
+    </div>
+    <div class="cards" data-section="agent">
+      <article class="card">
+        <h3 class="card-title">让编程 Agent 用上已登录 Chrome：六种方案对照</h3>
+        <p class="card-summary">Browser Use（约 2 天前，AI HOT）梳理如何把 Claude Code / Codex / Gemini CLI / Cursor 接到「你已经登录好的 Chrome」：Claude in Chrome（Pro/Max/Team/Enterprise 可用，纯 API Key 场景常关）、Playwright MCP 扩展模式、Chrome DevTools MCP、以及自家 Browser Harness 等。核心是扩展把标签页交给 Agent，或打开远程调试让工具附着到现有浏览器，避免每次重新登录设计平台、素材站与内部系统。</p>
+        <p class="card-insight">团队先定一条「只读浏览 / 可点击提交」权限线；设计评审账号用扩展只读模式，发布类操作仍走人审，并把选用的方案写进 Agent 上手文档。</p>
+        <a class="card-link" href="https://browser-use.com/posts/coding-agent-logged-in-chrome" target="_blank" rel="noopener noreferrer">查看原文 · Browser Use · AI HOT · 2天前</a>
+      </article>
+    </div>
+  </section>
+  <section class="section" id="sec-career">
+    <div class="section-header">
+      <div class="section-title-cn">职业与观点</div>
+      <p class="section-desc">设计师职业思考与行业观点</p>
+    </div>
+    <div class="cards" data-section="career">
+      <article class="card">
+        <h3 class="card-title">设计师成长自传：初创公司像一个个有个性的「人」</h3>
+        <p class="card-summary">优设 About a Designer 系列（昨天）续写职业早期的创业团队经历：作者以「设计布道师」视角回看从博客大巴到暴雪 Offer 之前的动荡旅途，把共事过的新创团队记成一个个独特个性的「人」，而非冷冰冰的组织机构。文中不堆鸡汤清单，而是用回顾本身提醒——回忆适合在走了一段路之后再做，当下与彼时的交错会带来疲惫，却也能看清选择从何而来。</p>
+        <p class="card-insight">写作品集「项目背景」时，少写公司估值多写「那个人/那支小队如何做决策」；面试故事用具体冲突与你的判断收尾，比罗列 Logo 更有活人感。</p>
+        <a class="card-link" href="https://www.uisdc.com/designer-startup-stories" target="_blank" rel="noopener noreferrer">查看原文 · 优设网 · 昨天</a>
+      </article>
+    </div>
+  </section>
+  <section class="section" id="sec-basic">
+    <div class="section-header">
+      <div class="section-title-cn">设计基础干货</div>
+      <p class="section-desc">拿掉 AI 依然成立的设计基础</p>
+    </div>
+    <div class="cards" data-section="basic">
+      <article class="card">
+        <h3 class="card-title">iPhone Duo 相机体验：虚拟前置、朝向协调器与取景布局</h3>
+        <p class="card-summary">优设陈子木（今天）编译苹果 Tech Talk《Build a great camera experience for iPhone Duo》：内外屏各有超广角前置（方形传感器），日常自拍优先虚拟前置（开合自动换镜，上限约 1080p/60fps）；要 4K/120fps 或深度则直管物理镜头。朝向协调器以「当前取景视图」区分同向/反向，自拍不再死绑 .front；预览容器布局与 videoGravity 必须拆开画，dynamicAspectRatio 换宽画幅后要重核悬浮控件，并与 RotationCoordinator 一起校准换屏方向。</p>
+        <p class="card-insight">折叠屏相机稿验收四连：镜头选型理由、同向自拍定义、预览框几何+填充策略、换屏旋转——四项写进检查表，比只标注「适配 Duo」更可测。</p>
+        <a class="card-link" href="https://www.uisdc.com/camera-experience-for-iphone-duo" target="_blank" rel="noopener noreferrer">查看原文 · 优设网 · 今天</a>
+      </article>
+    </div>
+  </section>
+  <section class="section" id="sec-tools">
+    <div class="section-header">
+      <div class="section-title-cn">AI 工具与产品</div>
+      <p class="section-desc">设计相关工具与产品更新</p>
+    </div>
+    <div class="cards" data-section="tools">
+      <article class="card">
+        <h3 class="card-title">Gamma 5：从一句话/文档到可继续编辑的演示稿</h3>
+        <p class="card-summary">Gamma Changelog（昨天，AI HOT）推出 Gamma 5，重做构思、设计与编辑方式：可喂句子、文档、PDF、图片或旧稿，Agent 在数分钟内头脑风暴并生成演示；支持接入 Slack/Notion 等 20+ 工具带入上下文，描述风格或给视觉参考以减少「通用模板味」。同步改善 Credits 余额可见性、PPT 导出对多语言字体/公式/表格的保真，以及竖版文档、社媒帖与 4:3 幻灯的预览匹配。</p>
+        <p class="card-insight">内部分享先丢「大纲+两张参考视觉」生成 Gamma 5 初稿，再只改叙事结构与关键页视觉；导出前用一页多语言/公式页做保真抽检。</p>
+        <a class="card-link" href="https://meetgamma.canny.io/changelog/whats-new-in-gamma-septemberoctober-2026" target="_blank" rel="noopener noreferrer">查看原文 · Gamma · AI HOT · 昨天</a>
+      </article>
+      <article class="card">
+        <h3 class="card-title">Krea 推出面向 Adobe Premiere 的插件</h3>
+        <p class="card-summary">Krea（昨天，AI HOT）宣布推出面向 Adobe Premiere 的插件，把生成式能力接到剪辑时间线旁，减少「网页生成 → 下载 → 再导入工程」的来回。对已在 Premiere 完成粗剪与调色的设计/影像同学，意味着 AI 出片可以更靠近成片工程，而不是停在独立网页工作台。</p>
+        <p class="card-insight">先在一条短宣传片工程里只试用「补镜头/变体」类节点，确认素材色彩空间与代理流程不打架，再决定是否写入团队默认剪辑模板。</p>
+        <a class="card-link" href="https://x.com/krea_ai/status/2114741513867395527" target="_blank" rel="noopener noreferrer">查看原文 · Krea · AI HOT · 昨天</a>
+      </article>
+      <article class="card">
+        <h3 class="card-title">WorkBuddy 进驻企微：AI 同事自带工作记忆</h3>
+        <p class="card-summary">量子位（昨天）报道企业微信与 WorkBuddy 打通：AI 出现在企微侧边栏与通讯录，企微账号一键登录；授权范围内可读消息、文件、日程、邮件，生成结果回流会话、微盘与业务流。能力覆盖未读优先级与群聊结论提炼、打开企微文档/微盘参与分析，以及日程会议与邮件处理；文中举例线索汇总进智能表格、锁客打标入 CRM、券商展业辅助与制造核价等落地。</p>
+        <p class="card-insight">UED 协作先试点「项目群周报自动提炼 + 设计评审纪要回流微盘」两条；权限按项目空间最小化授权，避免把整个通讯录一次性喂给 Agent。</p>
+        <a class="card-link" href="https://www.qbitai.com/2026/10/505365.html" target="_blank" rel="noopener noreferrer">查看原文 · 量子位 · 昨天</a>
+      </article>
+    </div>
+  </section>
+
+
+</main>
+
+
+<footer class="footer">
+    <p class="footer-text">
+    共 9 条精选资讯 · 数据源：AI HOT + 优设网 + 站酷 + 量子位 + 极客公园<br>
+    报告窗口：10.24–10.27 · 生成于 10.27（周二）· 站酷近 72h 条目偏设计周活动向已跳过；极客公园首页 403，column/74 可读但无新增未去重设计向精选；sec-cases 宁缺毋滥今日从缺</p>
+</footer>
+
+
+<script>
+function getReportDate() {
+  var m = document.title.match(/(\d{4})\.(\d{1,2})\.(\d{1,2})/);
+  if (m) return new Date(+m[1], +m[2] - 1, +m[3]);
+  return new Date();
+}
+function shanghaiTodayParts() {
+  var parts = {};
+  new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Asia/Shanghai',
+    year: 'numeric', month: 'numeric', day: 'numeric'
+  }).formatToParts(new Date()).forEach(function (p) { parts[p.type] = p.value; });
+  return { y: +parts.year, m: +parts.month, d: +parts.day };
+}
+var reportDate = getReportDate();
+var reportKey = reportDate.getFullYear() + '.' + (reportDate.getMonth() + 1) + '.' + reportDate.getDate();
+var cal = shanghaiTodayParts();
+var calendarKey = cal.y + '.' + cal.m + '.' + cal.d;
+var calendarToday = new Date(cal.y, cal.m - 1, cal.d);
+var container = document.getElementById('dateSwitcher');
+if (container) {
+  var days = [];
+  for (var i = 6; i >= 0; i--) {
+    var dt = new Date(calendarToday);
+    dt.setDate(calendarToday.getDate() - i);
+    var key = dt.getFullYear() + '.' + (dt.getMonth()+1) + '.' + dt.getDate();
+    days.push({
+      label: (dt.getMonth()+1) + '.' + dt.getDate(),
+      key: key,
+      href: key + '日报.html',
+      isReport: key === reportKey,
+      isCalendarToday: key === calendarKey,
+      isFuture: dt > calendarToday
+    });
+  }
+  var leftArrow = document.createElement('span');
+  leftArrow.className = 'date-nav-arrow';
+  leftArrow.textContent = '◀';
+  container.appendChild(leftArrow);
+  days.forEach(function(day) {
+    var pill = document.createElement('a');
+    pill.className = 'date-pill';
+    pill.textContent = day.label;
+    if (day.isReport) pill.classList.add('active');
+    if (day.isFuture) pill.classList.add('future');
+    pill.href = day.isCalendarToday ? 'index.html' : day.href;
+    container.appendChild(pill);
+  });
+}
+function applyFilter() {
+  var q = (document.getElementById('filterSearch').value || '').toLowerCase().trim();
+  var cards = document.querySelectorAll('.card');
+  var visible = 0;
+  cards.forEach(function(c) {
+    if (!q) { c.style.display = ''; visible++; return; }
+    var text = c.textContent.toLowerCase();
+    if (text.indexOf(q) >= 0) { c.style.display = ''; visible++; }
+    else { c.style.display = 'none'; }
+  });
+  var sections = document.querySelectorAll('.section');
+  var nr = document.getElementById('filterNoResult');
+  var anyVisible = 0;
+  sections.forEach(function(sec) {
+    var secCards = sec.querySelectorAll('.card');
+    var hasVisible = false;
+    secCards.forEach(function(c) { if (c.style.display !== 'none') hasVisible = true; });
+    sec.style.display = (hasVisible || !q) ? '' : 'none';
+    if (hasVisible) anyVisible++;
+  });
+  nr.style.display = (!q || anyVisible > 0) ? 'none' : 'block';
+  var fc = document.getElementById('filterCount');
+  fc.textContent = q ? (visible + ' / ' + cards.length) : '';
+}
+function toggleTheme() {
+  var isLight = document.body.classList.toggle('light');
+  try { localStorage.setItem('aigc-theme', isLight ? 'light' : 'dark'); } catch (e) {}
+  syncToggleIcon(isLight);
+}
+function syncToggleIcon(isLight) {
+  var btn = document.getElementById('themeToggle');
+  if (!btn) return;
+  btn.querySelector('.icon-moon').style.display = isLight ? 'none' : 'block';
+  btn.querySelector('.icon-sun').style.display = isLight ? 'block' : 'none';
+  btn.setAttribute('aria-label', isLight ? '切换深色模式' : '切换浅色模式');
+}
+(function() {
+  var saved = null;
+  try { saved = localStorage.getItem('aigc-theme'); } catch (e) {}
+  var isLight = saved === 'light' || (saved === null && window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches);
+  if (isLight) document.body.classList.add('light');
+  syncToggleIcon(isLight);
+})();
+applyFilter();
+</script>
+</body>
+</html>
