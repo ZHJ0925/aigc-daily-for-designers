@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>2026.10.28 的 AIGC 设计日报</title>
+<title>2026.11.4 的 AIGC 设计日报</title>
 <style>
 :root {
   --bg:           #070707;
@@ -311,11 +311,11 @@ a:hover { color: var(--brand-3); }
 <div class="hero">
   <div class="hero-inner">
     <div class="hero-badge"><span class="dot"></span><span>AI · DESIGN · 硅基流动风格</span></div>
-    <h1 class="hero-title">2026.10.28 的 AIGC 设计日报</h1>
-    <p class="hero-lead">周三这条线偏「设计 Agent 怎么养」：LangChain 开源 Content Studio 教 Agent 审美；美的 MevoX 用「先问一句」克制主动；折叠屏上 Fold & Squish 把合盖变成交互；Genie 4 / Hi3D / 即梦短剧工作室 / Creator Studio 把世界模拟与成片工具再推近一步。</p>
+    <h1 class="hero-title">2026.11.4 的 AIGC 设计日报</h1>
+    <p class="hero-lead">周三主线是「去 AI 味」与可交付链路：线框/情绪板/禁止清单摆脱模板脸；AI 个人站与 GrokBot 多 Bot；国行 Apple 智能与腾讯极简 AI 搜索；美图 Buddy、语音 Agent、Kimi 接引擎，以及 PixVerse / YouTube 换歌与 ChatGPT·Codex 额度合并。</p>
     <div class="hero-meta">
-      <span>BEIJING · 10.28</span>
-    <span>AI HOT · 优设 · 站酷 · 量子位 · 极客公园</span>
+      <span>BEIJING · 11.4</span>
+    <span>优设 · 站酷 · 量子位 · 极客公园 · IT之家智能时代</span>
     </div>
   </div>
 </div>
@@ -323,7 +323,7 @@ a:hover { color: var(--brand-3); }
 <section class="editorial">
   <div class="editorial-inner">
     <span class="editorial-badge">主编按语</span>
-    <p class="editorial-text">周三更像在补「Agent 的品味与边界」：<strong>LangChain 把 Content Studio 开源</strong>——审美来自设计师原则与反馈推理，而不是堆组件；Slack 线程自带沙箱电脑，异步子 Agent 跑长片，中位请求模型成本从约 $8 降到约 50 美分。产品侧，极客公园写美的 MevoX：全屋智能从空调切入，主动操作先弹窗确认、闲聊转交通用模型，A2A 让 Agent 用自然语言跨品牌对话。案例灵感是 Fold &amp; Squish——真要把 iPhone Duo 合上、在外屏搓颜料再打开看对印。基础干货继续盯折叠屏：微信读书未按 HIG 把 Tab 挪到右侧，保留单侧底栏却把状态图标顶到极右。工具面：DeepMind Genie 4 实时交互世界模型并原生出环境声与对话；量子位侧国产 Hi3D V3.0/Agent 开源可商用；优设情报里的即梦短剧工作室串起剧本/人设/分镜；Apple Creator Studio 给 Keynote/Pages/Numbers 加智能助手与 MCP。职业向是站酷拾羊一年约 8 万 AI 积分的账——有收入，但多数又投回去了。Replit Cloud Agents 则让设计等非工程角色可向公司代码库提经测试的 PR。</p>
+    <p class="editorial-text">周三聚焦「去 AI 味」与交付链路：优设三条实战——<strong>线框/情绪板/禁止清单</strong>摆脱模板脸、AI 个人站从 Pencil 到 Codex 上线、以及 GrokBot 多 Bot 分工。大厂侧国行 <strong>Apple 智能</strong>首发与腾讯筹备极简 AI 搜索。案例美图设计室 Buddy 对话出 PPT/物料；Agent 面纯语音私人助理与 Kimi 直连 Unity/虚幻。工具向 PixVerse×OpenAI 成片插件、YouTube AI 换歌，以及 ChatGPT/Codex <strong>额度合并</strong>。优设情报 LongCat-2.5 观察无独立可链文章 URL，未单列；站酷 72h 内条目偏旧/已去重；小红书因浏览器 CDP 未开跳过。</p>
   </div>
 </section>
 
@@ -333,8 +333,7 @@ a:hover { color: var(--brand-3); }
 
 <nav class="toc">
   <div class="toc-inner">
-    <span class="toc-label">目录</span><a class="toc-link" href="#sec-practice">AI 实战与教程</a><a class="toc-link" href="#sec-bigtech">大厂 AI 场景</a><a class="toc-link" href="#sec-cases">案例灵感</a><a class="toc-link" href="#sec-agent">Agent 与编程实战</a><a class="toc-link" href="#sec-career">职业与观点</a><a class="toc-link" href="#sec-basic">设计基础干货</a><a class="toc-link" href="#sec-tools">AI 工具与产品</a>
-    <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="切换深色 / 浅色">
+    <span class="toc-label">目录</span><a class="toc-link" href="#sec-practice">AI 实战与教程</a><a class="toc-link" href="#sec-bigtech">大厂 AI 场景</a><a class="toc-link" href="#sec-cases">案例灵感</a><a class="toc-link" href="#sec-agent">Agent 与编程实战</a><a class="toc-link" href="#sec-tools">AI 工具与产品</a><button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="切换深色 / 浅色">
       <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
       <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg>
     </button>
@@ -350,8 +349,6 @@ a:hover { color: var(--brand-3); }
 <main class="main">
   <div class="filter-noresult" id="filterNoResult">未找到匹配的内容 🔍</div>
 
-
-  
   <section class="section" id="sec-practice">
     <div class="section-header">
       <div class="section-title-cn">AI 实战与教程</div>
@@ -359,16 +356,22 @@ a:hover { color: var(--brand-3); }
     </div>
     <div class="cards" data-section="practice">
       <article class="card">
-        <h3 class="card-title">LangChain 开源设计 Agent：教模型「我们的品味」</h3>
-        <p class="card-summary">LangChain（昨天，AI HOT）详解自研设计 Agent Content Studio：活在 Slack，一条提示可产出视频、社媒图、UI 复刻图与幻灯片，资产全部用代码生成便于改 timing/文案。关键不是堆 115 个组件，而是把设计师原则、反 AI slop 护栏与反馈推理写进 skills/wiki；每条线程独占沙箱电脑，异步子 Agent 跑长任务，主 Agent 当「幕僚长」汇报进度并在发布前等人审。已交付 3000+ 资产、80+ 套幻灯，中位请求模型成本约从 $8 降到 50 美分；harness 已开源，可挂品牌 token 后部署到团队 Slack。</p>
-        <p class="card-insight">UED 可先抽一套「品牌原则 + 三张反面 AI 味对照」写成 Agent skill；试点只开放「社媒头图/内部分享封面」两类请求，发布必须人审，再决定是否扩到动效片。</p>
-        <a class="card-link" href="https://www.langchain.com/blog/design-agent" target="_blank" rel="noopener noreferrer">查看原文 · LangChain · AI HOT · 昨天</a>
+        <h3 class="card-title">7 招摆脱「AI 味」UI：先线框与情绪板，再让模型临摹</h3>
+        <p class="card-summary">优设 Clip 设计夹（昨天）整理 Vibe Coding 实操：纯文字常出蓝紫渐变 + Inter + Lucide 的模板脸。对策包括 Excalidraw 线框图喂结构、按组件截参考图、情绪板锁配色、先写 Design Tokens/CLAUDE.md、用禁止清单挡默认样式，以及换字体/图标库。核心一句话：别让 AI 想象，让它临摹。</p>
+        <p class="card-insight">项目开场先交「线框截图 + 色板 HEX + 禁止清单」三件套；组件级参考图比整页扔给模型更稳。</p>
+        <a class="card-link" href="https://www.uisdc.com/escape-ai-look" target="_blank" rel="noopener noreferrer">查看原文 · 优设网 · 昨天</a>
       </article>
       <article class="card">
-        <h3 class="card-title">10 月设计周刊第三波：Framer MCP 与 Figma Duo 画板</h3>
-        <p class="card-summary">优设张老三（昨天）更新设计周刊第三波：Framer 正式推出 MCP，可接 Claude / Codex / Cursor，让 Agent 直接操作设计画布、管 CMS 甚至发布站点——AI 从「生成一页」变成能参与改版与维护。Figma 同步补上 iPhone Duo 与 iPhone 18 的 Frame 预设，覆盖界面、原型、Figma Make 预览与 Code Layers。周刊还汇总折叠屏适配重启、工具与素材速览，适合当本周工具雷达。</p>
-        <p class="card-insight">本周两件落地：给设计系统仓库接一条 Framer/Figma MCP 只读巡检；新建 Duo 项目直接用官方 Frame，先画「展开阅读 / 合盖外屏」两态再谈细节。</p>
-        <a class="card-link" href="https://www.uisdc.com/design-weekly-42" target="_blank" rel="noopener noreferrer">查看原文 · 优设网 · 昨天</a>
+        <h3 class="card-title">AI 个人网站：从构思、Pencil 到 Codex 部署的全流程</h3>
+        <p class="card-summary">优设（昨天）从设计师视角复盘第三版个人站：ChatGPT 网页版做产品构思，Pencil 出设计稿，Codex 负责开发与动效并部署上线。强调有了 AI，对齐网格与细节可 100% 落到代码，不必再被「开发砍细节」；并对比作品集 PDF vs 个人网站的选择。</p>
+        <p class="card-insight">作品集站点先定「个人品牌一句话 + 2–3 个互动锚点」，再进设计稿；动效单独列为 Codex 验收项，避免只出静态壳。</p>
+        <a class="card-link" href="https://www.uisdc.com/personal-site-build" target="_blank" rel="noopener noreferrer">查看原文 · 优设网 · 昨天</a>
+      </article>
+      <article class="card">
+        <h3 class="card-title">GrokBot 多 Bot 分工：设计师可抄的 Personal Agent 体系</h3>
+        <p class="card-summary">优设阿真（昨天）分享两个月 GrokBot 用法：本质是 Personal Agent，可建多个独立 Bot 分工，并打通本地电脑。文内给入门技巧与多 Bot 协作示例，适合把需求 check、资料简报、日报等重复活拆成专用助手，而不是一个全能对话框硬扛。</p>
+        <p class="card-insight">按「一事一 Bot」拆职责（简报 / 需求 check / 素材整理），并在每个 Bot 简介里写清输入输出格式，减少串台。</p>
+        <a class="card-link" href="https://www.uisdc.com/grokbot-agent-system" target="_blank" rel="noopener noreferrer">查看原文 · 优设网 · 昨天</a>
       </article>
     </div>
   </section>
@@ -379,24 +382,30 @@ a:hover { color: var(--brand-3); }
     </div>
     <div class="cards" data-section="bigtech">
       <article class="card">
-        <h3 class="card-title">美的 MevoX：全屋 Agent 从「先问一句」开始</h3>
-        <p class="card-summary">极客公园（昨天）报道美的全屋智能路径：从空调等刚需家电切入，用 3.2 寸「精灵屏」兼语音入口与网关；家居智能体 MevoX 强调深度推理与长期记忆——复杂分灯指令可推断设备，睡前偏好说一次后续一句话复用。更值得设计同学看的是克制：人在传感器检测到久无人不会直接关空调，而是弹窗询问；涉及安全要二次确认；闲聊转交豆包等通用模型，MevoX 只管家。跨品牌试 A2A，让双方 Agent 用自然语言协商，已与奇瑞 iCAR 等跑通车家问答。</p>
-        <p class="card-insight">写智能家居/车机 Agent 时，把「可自动执行 / 需确认 / 禁止代劳」三档写进状态机；主动智能的第一版交互往往是一句确认弹窗，而不是炫技全自动。</p>
-        <a class="card-link" href="https://www.geekpark.net/news/373014" target="_blank" rel="noopener noreferrer">查看原文 · 极客公园 · 昨天</a>
+        <h3 class="card-title">国行 Apple 智能首发：Siri 灯效、实时翻译与千问联动</h3>
+        <p class="card-summary">IT之家（今天）汇总 iOS 27.3 开发者预览为国行带来的「Apple 智能与 Siri」：长按电源键跑马灯呼出、信息/FaceTime/电话与 AirPods 实时翻译，以及 iPhone 联手千问扩展能力。面向 iPhone 15 Pro 及更新机型，是国行体验设计师需要立刻跟进的系统级入口变化。</p>
+        <p class="card-insight">车机/手机双语与面对面翻译场景，优先画「谁在听、字幕落点、打断恢复」；系统灯效是新的唤起反馈，别再只画旧波形。</p>
+        <a class="card-link" href="https://www.ithome.com/1/021/867.htm" target="_blank" rel="noopener noreferrer">查看原文 · IT之家 · 今天</a>
+      </article>
+      <article class="card">
+        <h3 class="card-title">腾讯筹备 C 端 AI 搜索：极简界面，问答与网页同一体验</h3>
+        <p class="card-summary">IT之家（昨天）援引虎嗅：腾讯将推面向 C 端的 AI 搜索引擎，界面极简、全面 AI 化，强化权威信源排序，并把 AI 问答与网页搜索揉进同一体验。对搜索结果页信息层级与「答案/来源」信任设计是直接信号。</p>
+        <p class="card-insight">做 AI 搜索结果页时，默认态就要并列「结论摘要 + 可点信源」，极简不等于藏来源。</p>
+        <a class="card-link" href="https://www.ithome.com/1/021/643.htm" target="_blank" rel="noopener noreferrer">查看原文 · IT之家 · 昨天</a>
       </article>
     </div>
   </section>
   <section class="section" id="sec-cases">
     <div class="section-header">
       <div class="section-title-cn">案例灵感</div>
-      <p class="section-desc">优秀案例与灵感启发</p>
+      <p class="section-desc">产品与交互案例灵感</p>
     </div>
     <div class="cards" data-section="cases">
       <article class="card">
-        <h3 class="card-title">Fold &amp; Squish：把合盖折纸做成 iPhone Duo 核心交互</h3>
-        <p class="card-summary">优设细节猎人（昨天）介绍 Fold &amp; Squish：把美术课「蝴蝶对印画」做成 App——半边纸挤颜料、对折一按，打开呈左右对称。适配 iPhone Duo 后，真的要合上手机、在外屏搓几下，再展开看印痕；折叠动作本身成为交互节点，而不是只拿来分屏。合盖—外屏操作—展开揭示的节奏，把实体手工的开盲盒感搬进折叠形态。</p>
-        <p class="card-insight">折叠屏提案别只画「展开更大」：找一个必须依赖开合才成立的动词（盖印、封存、对照），用外屏做过程、内屏做结果，评审时现场合盖演示比静态标注更有说服力。</p>
-        <a class="card-link" href="https://www.uisdc.com/hunter/0221688116.html" target="_blank" rel="noopener noreferrer">查看原文 · 优设网 · 昨天</a>
+        <h3 class="card-title">美图设计室 Buddy：对话调用技能，PPT/海报/视频一条龙</h3>
+        <p class="card-summary">极客公园（昨天）快讯：美图设计室以 WorkBuddy 生态伙伴身份展示 Buddy 应用——对话即可调用专业技能，覆盖从策略洞察到设计落地，产出 PPT、海报、营销视频、社媒与电商物料。PPT 场景可上传文档或输入主题，自动整理并输出多套风格方案；也可上传参考样图锁定视觉。</p>
+        <p class="card-insight">对内「业务主题 → 多风格方案」可做成固定技能卡：强制上传品牌色/参考页，再允许一键换风格比稿。</p>
+        <a class="card-link" href="https://www.geekpark.net/news/373406" target="_blank" rel="noopener noreferrer">查看原文 · 极客公园 · 昨天</a>
       </article>
     </div>
   </section>
@@ -407,84 +416,53 @@ a:hover { color: var(--brand-3); }
     </div>
     <div class="cards" data-section="agent">
       <article class="card">
-        <h3 class="card-title">Replit Cloud Agents：非工程师也能往公司代码库提 PR</h3>
-        <p class="card-summary">Replit（昨天，AI HOT）面向 Pro / Enterprise 推出 Cloud Agents：设计、客服等非工程角色可用自然语言向公司核心代码库提交经测试的 pull request，让「改文案/调间距/修小流程」不必再排队等前端档期。对已经把设计稿与代码仓库打通的团队，这意味着 Agent 交付物可以直接进入评审流，而不是停在截图或私有分支。</p>
-        <p class="card-insight">先圈「文案、空状态、间距 token」三类低风险改动给设计同学开 Agent PR 白名单；合并仍走设计+开发双人审，并在 PR 模板要求附前后截图。</p>
-        <a class="card-link" href="https://replit.com/blog/anyone-can-bring-ideas-to-company-codebase" target="_blank" rel="noopener noreferrer">查看原文 · Replit · AI HOT · 昨天</a>
+        <h3 class="card-title">纯语音 Personal Agent：边喝咖啡边派活，UI 也在线</h3>
+        <p class="card-summary">量子位（昨天）体验一款审美在线的纯语音私人助理：可边听新闻边打断派任务（如回邮件），不陷入尴尬静默，体验被比作电影《Her》。作者强调它比一堆前沿 Demo 更贴近日常——语音连续性与「人味」打断恢复，是 Personal Agent 产品体验的关键课。</p>
+        <p class="card-insight">语音 Agent 原型优先做「打断—确认—继续播报」状态机，视觉只需克制点缀；别一上来堆大面板。</p>
+        <a class="card-link" href="https://www.qbitai.com/2026/11/507419.html" target="_blank" rel="noopener noreferrer">查看原文 · 量子位 · 昨天</a>
       </article>
-    </div>
-  </section>
-  <section class="section" id="sec-career">
-    <div class="section-header">
-      <div class="section-title-cn">职业与观点</div>
-      <p class="section-desc">设计师职业思考与行业观点</p>
-    </div>
-    <div class="cards" data-section="career">
       <article class="card">
-        <h3 class="card-title">一年烧掉约 8 万 AI 积分：自由设计师怎么算这笔账</h3>
-        <p class="card-summary">站酷轩大拾羊（3天前）聊「一年花约 8 万元 AI 积分，拿了十几个奖、做了十几个大牌项目，最后赚到钱了吗？」——有收入，但项目跑完钱基本又投回去。节目谈到 AI 反复抽卡的成本、制作人交付压力，以及自由设计师如何用不同收入来源互相支撑；被现实捶打后仍想继续做，只是除了「能不能做出来」，还要问「这一单最后能留下多少钱」。</p>
-        <p class="card-insight">个人/小团队把「模型积分、改稿轮次、人工精修」三行写进报价单；对内设每月积分上限，对外把可接受抽卡次数写进需求确认，避免作品很炫账上亏光。</p>
-        <a class="card-link" href="https://www.zcool.com.cn/article/ZMTgzMjQyMA==.html" target="_blank" rel="noopener noreferrer">查看原文 · 站酷 · 3天前</a>
-      </article>
-    </div>
-  </section>
-  <section class="section" id="sec-basic">
-    <div class="section-header">
-      <div class="section-title-cn">设计基础干货</div>
-      <p class="section-desc">拿掉 AI 依然成立的设计基础</p>
-    </div>
-    <div class="cards" data-section="basic">
-      <article class="card">
-        <h3 class="card-title">微信读书 vs 苹果 HIG：Duo 上要不要把 Tab 挪到右边</h3>
-        <p class="card-summary">优设细节猎人（昨天）对比 iPhone Duo 适配：屏幕更宽但高度更低，若严格按苹果规范，底部 Tab 宜放到右侧以节省纵向阅读高度；微信读书却保留常规手机形态的单侧底部标签栏与顶部状态栏，结果信号/网络图标被顶到极右上角。这不是「谁对谁错」的口号题，而是阅读类产品在规范、习惯与信息密度之间的取舍样本。</p>
-        <p class="card-insight">折叠屏适配评审加一列「遵循 HIG / 保留旧习惯」及代价说明；阅读/长列表优先保纵向，工具型再考虑侧栏化 Tab，并用真机握持测拇指热区。</p>
-        <a class="card-link" href="https://www.uisdc.com/hunter/0221688113.html" target="_blank" rel="noopener noreferrer">查看原文 · 优设网 · 昨天</a>
+        <h3 class="card-title">Kimi 游戏/创意方案：直连 Unity、虚幻与 Blender 工程</h3>
+        <p class="card-summary">IT之家（昨天）介绍月之暗面面向游戏与创意的方案：基于 Kimi K3.1，配合 Kimi Code / Work Agent，经插件连接 Unity、虚幻、Blender 等，直接操作现有工程并交付可编辑文件与操作记录。目标是降低玩法原型验证成本，打通策划—程序—美术跨工具协作，而不是只吐一段说明或一张概念图。</p>
+        <p class="card-insight">玩法验证需求写成「可试玩目标 + 引擎内验收点」再派给 Agent；输出必须是工程内可继续改的文件，不收纯文案。</p>
+        <a class="card-link" href="https://www.ithome.com/1/021/539.htm" target="_blank" rel="noopener noreferrer">查看原文 · IT之家 · 昨天</a>
       </article>
     </div>
   </section>
   <section class="section" id="sec-tools">
     <div class="section-header">
       <div class="section-title-cn">AI 工具与产品</div>
-      <p class="section-desc">设计相关工具与产品更新</p>
+      <p class="section-desc">新工具、模型与可试用产品</p>
     </div>
     <div class="cards" data-section="tools">
       <article class="card">
-        <h3 class="card-title">DeepMind Genie 4：实时交互世界模型，原生带声</h3>
-        <p class="card-summary">Google DeepMind（昨天，AI HOT）发布 Genie 4：强调实时交互世界模拟、更强照片级质感，并首次在实时世界模型里原生生成音频（环境声与可实时交互的人物对话）。可用键盘导航/运镜，并用自然语言改天气、加入人物物体；Gemini 负责把提示贴合场景并在输入间隙维持世界连贯。官方亦提到可用于交互体验概念设计——在写引擎代码前用自然语言试玩法。</p>
-        <p class="card-insight">互动展陈/汽车座舱 demo 可先用 Genie 类世界模型跑「天气/时段/乘客进入」分支，确认叙事节奏后再进 Unity/Unreal，避免一上来就重做关卡。</p>
-        <a class="card-link" href="https://deepmind.google/blog/genie-4-a-new-generation-of-world-simulation/" target="_blank" rel="noopener noreferrer">查看原文 · DeepMind · AI HOT · 昨天</a>
+        <h3 class="card-title">PixVerse × OpenAI：提示词到成片，插件进 ChatGPT/Codex</h3>
+        <p class="card-summary">量子位（今天）报道爱诗科技 PixVerse 与 OpenAI 深度合作：官方插件接入 ChatGPT 与 Codex，另有 CLI 与 Canvas 工作台；并推出「Prompt to Production」创作者教育计划。演示里可用自然语言走通角色参考视频→套用到资产→微调成片，视频生成变成 Agent 可调用的能力。</p>
+        <p class="card-insight">短视频工作流可固定「角色/场景参考图进项目文件夹 → 再生成」；分镜不过关不进成片，省掉重渲。</p>
+        <a class="card-link" href="https://www.qbitai.com/2026/11/507313.html" target="_blank" rel="noopener noreferrer">查看原文 · 量子位 · 今天</a>
       </article>
       <article class="card">
-        <h3 class="card-title">国产 Hi3D：开源可商用的高精度 3D 与创作 Agent</h3>
-        <p class="card-summary">量子位（昨天）报道 Hi3D：面向 3D 创作者的 Agent + 专业模型组合，最新 Hi3D V3.0 称业界首个可商用 2048³ 超高精度国产自研 AI 3D 模型；同日开放基于 Sparc3D 的 V1.0 代码（约 200 万筛选资产训练），GitHub / Hugging Face 可下。Agent 支持自然语言改部件、轻量化、绑骨、拆件打印准备，并可通过 MCP 被外部 Agent 调用，补「通用大模型能搭形、专业模型收细节」的分工。</p>
-        <p class="card-insight">角色/道具资产管线可试点「通用模型出结构 → Hi3D 收曲面细节 → 人工过拓扑」；需要进引擎前先看切片率与面数是否达标，再谈替换 Midjourney+手工重拓扑旧流程。</p>
-        <a class="card-link" href="https://www.qbitai.com/2026/10/505694.html" target="_blank" rel="noopener noreferrer">查看原文 · 量子位 · 昨天</a>
+        <h3 class="card-title">YouTube「替换歌曲」：侵权配乐一键换成免版税 AI 器乐</h3>
+        <p class="card-summary">IT之家（今天）称 YouTube 向全球创作者推广 Studio 内「替换歌曲」：收到音频版权申诉后，可即时生成约四首约三分钟免版税器乐替换原曲，完成后 Content ID 声明自动移除。创作侧把「配乐合规」收进平台工具，而不是只靠外部曲库。</p>
+        <p class="card-insight">UGC/活动视频规范里加一条：先走平台替换/免版税通道，再考虑外采音乐，减少上线后下架。</p>
+        <a class="card-link" href="https://www.ithome.com/1/021/877.htm" target="_blank" rel="noopener noreferrer">查看原文 · IT之家 · 今天</a>
       </article>
       <article class="card">
-        <h3 class="card-title">即梦短剧工作室：剧本 / 人设 / 分镜三模型串成片</h3>
-        <p class="card-summary">优设情报今日头条指向即梦能力升级；IT之家（2天前）详述字节即梦 AI「短剧工作室」：自研 DreamScript（多题材剧本、爆款诊断、10 万字长文解析）、Anycook（短剧向人设与多风格场景）、DreamShot（画布/故事板双模式、对话改稿、3D 导演台预演与关键镜头）。后期支持单镜重拍、人声分离重配、智能切镜与资产互通，并提供原片解构重制与本地化转绘。</p>
-        <p class="card-insight">品牌短剧/信息流试制可先固定「人设资产库 + 3 镜故事板」再进 Seedance 成片；改稿只动单镜，避免整集重抽导致角色漂移。</p>
-        <a class="card-link" href="https://www.ithome.com/1/018/013.htm" target="_blank" rel="noopener noreferrer">查看原文 · IT之家 · 优设情报 · 2天前</a>
-      </article>
-      <article class="card">
-        <h3 class="card-title">Apple Creator Studio：Keynote / Pages 智能助手与 MCP</h3>
-        <p class="card-summary">Apple Newsroom（昨天，AI HOT）更新 Creator Studio：Final Cut Pro 内置 MotionVFX 并扩充 Content Hub 视频素材；Logic Pro 创作工具扩展；Keynote、Pages、Numbers 新增理解文档上下文的智能助手（beta），并支持 Model Context Protocol（MCP）做工作流自动化。现有订阅用户预计 11 月可在 App Store 免费更新。</p>
-        <p class="card-insight">内部分享稿可等 MCP 上线后，把「品牌字号/禁色/封面模板」接到 Keynote 助手做第一轮合规检查；成片包装则优先试 Final Cut 内的 MotionVFX，减少外链素材往来。</p>
-        <a class="card-link" href="https://www.apple.com/newsroom/2026/10/apple-creator-studio-adds-powerful-new-ai-features-and-even-more-creative-tools/" target="_blank" rel="noopener noreferrer">查看原文 · Apple · AI HOT · 昨天</a>
+        <h3 class="card-title">ChatGPT 与 Codex 额度将合并：Vibe Coding 要精打细算</h3>
+        <p class="card-summary">优设（昨天）解读 OpenAI 帮助文档更新：约从 12 月起 Plus/Pro 的 ChatGPT 聊天与 Codex 共用同一用量池，按 Token 计，模型越强、思考越深扣得越多——「几乎无限聊」结束。对同时用对话构思 + Codex 写站的设计师，配额变成工作流约束。</p>
+        <p class="card-insight">把「闲聊探索」和下手写代码拆开：探索用轻量模型，落地再开 Codex；项目级提示词与 Skill 复用，少反复重喂上下文。</p>
+        <a class="card-link" href="https://www.uisdc.com/chatgpt-quota-merge" target="_blank" rel="noopener noreferrer">查看原文 · 优设网 · 昨天</a>
       </article>
     </div>
   </section>
 
-
 </main>
-
 
 <footer class="footer">
     <p class="footer-text">
-        共 11 条精选资讯 · 数据源：AI HOT + 优设网 + 站酷 + 量子位 + 极客公园<br>
-    报告窗口：10.25–10.28 · 生成于 10.28（周三）· 五源均已抓取；优设情报「即梦」未用 /news 作链接，改指向 IT之家详述；站酷另有 MiniMax H3 整合包更新未单列</p>
+        共 11 条精选资讯 · 数据源：优设网 + 站酷 + 量子位 + 极客公园 + IT之家智能时代<br>
+    报告窗口：11.1–11.4 · 生成于 11.4（周三）· 五源均已尝试；极客公园首页 403，改用专栏/单篇；站酷 discover 可打开，但 72h 内无未去重新条目；优设情报今日 LongCat 等观察无独立文章 URL，未单列情报卡；小红书因浏览器 CDP 未连接跳过</p>
 </footer>
-
 
 <script>
 function getReportDate() {
