@@ -65,6 +65,7 @@ body.light .card-title { color: var(--text); }
 body.light .card-summary { color: var(--text-2); }
 body.light .card-insight { color: #6E29F5; background: rgba(110,41,246,.06); }
 body.light .card { background: linear-gradient(180deg, #ffffff 0%, #fafafe 100%); }
+body.light .hero-btn { color: #fff; }
 body.light .date-pill { background: rgba(255,255,255,.7); }
 body.light .date-pill.active { background: #ffffff; color: #6E29F5; border-color: #6E29F5; box-shadow: 0 4px 14px rgba(110,41,246,.18); }
 body.light .date-nav-arrow:hover { background: rgba(0,0,0,.04); }
@@ -131,6 +132,21 @@ a:hover { color: var(--brand-3); }
   display: flex; gap: 24px; justify-content: center;
   font-family: var(--mono); letter-spacing: 0.04em;
 }
+.hero-actions { display: flex; justify-content: center; margin-top: 24px; }
+.hero-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 10px 22px;
+  background: var(--gradient-brand);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-pill);
+  font-size: 14px; font-weight: 600;
+  letter-spacing: 0.02em;
+  box-shadow: var(--shadow-glow);
+  transition: transform .15s ease, opacity .15s ease, color .15s ease;
+}
+.hero-btn:hover { color: #fff; opacity: .92; transform: translateY(-1px); }
+
 .editorial { position: relative; z-index: 2; max-width: var(--max-w); margin: 32px auto 0; padding: 0 32px; }
 .editorial-inner {
   background: linear-gradient(135deg, rgba(110,41,246,.10) 0%, rgba(2,246,247,.04) 100%);
@@ -317,6 +333,9 @@ a:hover { color: var(--brand-3); }
     <div class="hero-meta">
       <span>BEIJING · 11.12</span>
     <span>优设 · 站酷 · 量子位 · 极客公园 · IT之家智能时代</span>
+    </div>
+    <div class="hero-actions">
+      <a class="hero-btn" href="https://www.uisdc.com/news" target="_blank" rel="noopener noreferrer">优设AI情报</a>
     </div>
   </div>
 </div>
