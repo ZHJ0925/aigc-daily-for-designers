@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>2026.11.6 的 AIGC 设计日报</title>
+<title>2026.11.13 的 AIGC 设计日报</title>
 <style>
 :root {
   --bg:           #070707;
@@ -65,6 +65,7 @@ body.light .card-title { color: var(--text); }
 body.light .card-summary { color: var(--text-2); }
 body.light .card-insight { color: #6E29F5; background: rgba(110,41,246,.06); }
 body.light .card { background: linear-gradient(180deg, #ffffff 0%, #fafafe 100%); }
+body.light .hero-btn { color: #fff; }
 body.light .date-pill { background: rgba(255,255,255,.7); }
 body.light .date-pill.active { background: #ffffff; color: #6E29F5; border-color: #6E29F5; box-shadow: 0 4px 14px rgba(110,41,246,.18); }
 body.light .date-nav-arrow:hover { background: rgba(0,0,0,.04); }
@@ -131,6 +132,21 @@ a:hover { color: var(--brand-3); }
   display: flex; gap: 24px; justify-content: center;
   font-family: var(--mono); letter-spacing: 0.04em;
 }
+.hero-actions { display: flex; justify-content: center; margin-top: 24px; }
+.hero-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 10px 22px;
+  background: var(--gradient-brand);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-pill);
+  font-size: 14px; font-weight: 600;
+  letter-spacing: 0.02em;
+  box-shadow: var(--shadow-glow);
+  transition: transform .15s ease, opacity .15s ease, color .15s ease;
+}
+.hero-btn:hover { color: #fff; opacity: .92; transform: translateY(-1px); }
+
 .editorial { position: relative; z-index: 2; max-width: var(--max-w); margin: 32px auto 0; padding: 0 32px; }
 .editorial-inner {
   background: linear-gradient(135deg, rgba(110,41,246,.10) 0%, rgba(2,246,247,.04) 100%);
@@ -308,24 +324,27 @@ a:hover { color: var(--brand-3); }
 
 <body>
 
+
 <div class="hero">
   <div class="hero-inner">
     <div class="hero-badge"><span class="dot"></span><span>AI · DESIGN · 硅基流动风格</span></div>
-    <h1 class="hero-title">2026.11.6 的 AIGC 设计日报</h1>
-    <p class="hero-lead">周五主线是「去 AI 味 + 可证明的能力」：优设三步 GPT 建站与招聘侧查 AI 记录；站酷谈 Vibe Coding 去模板化与电商工具可用性；大厂侧看 iOS HomeView 第三方对话线索与腾讯 Miora/Ardot；工具向 GPT-Image-2.6（GIF/SVG）与 Gemini Omni 1.2 Flash。</p>
+    <h1 class="hero-title">2026.11.13 的 AIGC 设计日报</h1>
+    <p class="hero-lead">周五窗口：优设把 VibeCoding 界面里那股「塑料感」拆成六个能对上号的问题，从规范、圆角、中英字体，一直到配图和动效；另一篇把产品里常见的十种图标风格，从线性理到实物图。案例是 Fable 5.2 上线后的第一批创作者作业，有 3D 短片、可切换主题的写作空间，也有纯代码画出的油画。Agent 面是 Kubai Icons 的新 Skill，库里找不到的图标可以按同一套规矩现画。基础还有一篇中英品牌字体怎么配的方法；工具向是火山引擎刚推出的 Seedance 2.5 flash，速度更快，更适合批量出片。</p>
     <div class="hero-meta">
-      <span>BEIJING · 11.6</span>
+      <span>BEIJING · 11.13</span>
     <span>优设 · 站酷 · 量子位 · 极客公园 · IT之家智能时代</span>
+    </div>
+    <div class="hero-actions">
+      <a class="hero-btn" href="https://www.uisdc.com/news" target="_blank" rel="noopener noreferrer">优设AI情报</a>
     </div>
   </div>
 </div>
 
-</div>
 
 <section class="editorial">
   <div class="editorial-inner">
     <span class="editorial-badge">主编按语</span>
-    <p class="editorial-text">周五五源齐抓：实战是<strong>GPT 三步建站</strong>、站酷<strong>摆脱 AI 味</strong>与电商可用性报告；大厂看 <strong>iOS 27.3 HomeView 第三方 AI</strong>线索与腾讯 Miora/Ardot 降门槛；案例淘宝短剧×Wan 品牌剧种草；Agent 面开源 <strong>AutoLoop</strong> 派活审批闭环；职业向招聘核查 AI 痕迹；基础补「背景框」规范；工具 GPT-Image-2.6 与 Omni 1.2 Flash。极客公园首页仍 403（栏目回退）；小红书 CDP 授权超时跳过。</p>
+    <p class="editorial-text">周五：实战先看 <strong>VibeCoding 界面为什么总像「塑料」</strong>——不是感觉不对，而是规范、圆角、字体、效果、配图和动效这六处经常一起翻车；作者说怎么改会放到下篇，但这六个问题已经能拿去对照稿件。案例是 <strong>Fable 5.2 的第一批创作者作业</strong>，和昨天卡兹克那篇深测不是同一组例子，这里有 3D 房间短片、可切换主题的写作空间，也有不调用生图模型、纯代码画的油画。Agent 面是 Kubai Icons 的 Skill：库里没有的图标，让 Claude Code 或 Codex 按同一套圆角、配色和悬停动效现画，再导出成组件。基础是十种常见图标风格，以及中英品牌字体配对的三维协调模型——先看中文性格，再找能应和的拉丁体。工具向是 <strong>Seedance 2.5 flash</strong>，效果接近旗舰，速度翻倍、价格更低，会陆续上即梦等平台。站酷窗口内仍无新的带日期 AI×设计稿；极客公园首页 403，早知道里的 Claude 白板套件与 11.11 同题未再收；量子位首页可访问，H3-Image 开源实测与 11.11 同题未再收；优设情报头条多为昨日已报的 Adobe 实验、文心 5.5，或 GPT-Live / 元宝搜索 / DeepL 等非本期设计向，未再收；小红书未找到可标注日期的公开笔记，跳过未编造。</p>
   </div>
 </section>
 
@@ -335,7 +354,7 @@ a:hover { color: var(--brand-3); }
 
 <nav class="toc">
     <div class="toc-inner">
-    <span class="toc-label">目录</span><a class="toc-link" href="#sec-practice">AI 实战与教程</a><a class="toc-link" href="#sec-bigtech">大厂 AI 场景</a><a class="toc-link" href="#sec-cases">案例灵感</a><a class="toc-link" href="#sec-agent">Agent 与编程实战</a><a class="toc-link" href="#sec-career">职业与观点</a><a class="toc-link" href="#sec-basic">设计基础干货</a><a class="toc-link" href="#sec-tools">AI 工具与产品</a><button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="切换深色 / 浅色">
+    <span class="toc-label">目录</span><a class="toc-link" href="#sec-practice">AI 实战与教程</a><a class="toc-link" href="#sec-cases">案例灵感</a><a class="toc-link" href="#sec-agent">Agent 与编程实战</a><a class="toc-link" href="#sec-basic">设计基础干货</a><a class="toc-link" href="#sec-tools">AI 工具与产品</a><button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="切换深色 / 浅色">
       <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
       <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg>
     </button>
@@ -358,43 +377,10 @@ a:hover { color: var(--brand-3); }
     </div>
     <div class="cards" data-section="practice">
       <article class="card">
-        <h3 class="card-title">视觉提升 200%：3 步用 GPT 做出漂亮网站</h3>
-        <p class="card-summary">优设（昨天）把个人站点从构思到上线压成三步 GPT 流程，重点放在视觉层次、组件一致性与可上线初稿，而不是堆特效。适合设计师用自然语言快速搭作品集/落地页骨架，再人工收口排版与品牌细节。</p>
-        <p class="card-insight">先定信息架构与组件规范，再让 GPT 批量填内容；最后一轮只改对比度、字号阶梯与留白。</p>
-        <a class="card-link" href="https://www.uisdc.com/three-steps-website" target="_blank" rel="noopener noreferrer">查看原文 · 优设网 · 昨天</a>
-      </article>
-      <article class="card">
-        <h3 class="card-title">7 个方法让 Vibe Coding 摆脱「AI 味」</h3>
-        <p class="card-summary">站酷 Clip 设计夹（前天）总结 7 个去模板化技巧，覆盖 UI/网页与 AI 创作：约束设计系统、注入真实品牌素材、控制字号节奏与微交互，避免「一眼 AI」。对用 Cursor/对话式生成界面的设计师很实用。</p>
-        <p class="card-insight">把设计 token 与真实截图当硬约束写进提示词，比反复说「高级感」更有效。</p>
-        <a class="card-link" href="https://www.zcool.com.cn/article/ZMTgzNDg1Ng==.html" target="_blank" rel="noopener noreferrer">查看原文 · 站酷 · 前天</a>
-      </article>
-      <article class="card">
-        <h3 class="card-title">AI 工具电商可用性报告：平面/网页怎么选</h3>
-        <p class="card-summary">站酷长图报告（前天）梳理主流 AI 工具在电商场景的可用性（平面、网页、AI 创作向），把「能出图」和「能进生产」分开看。适合电商视觉同学对照选型与排坑，少踩「演示很炫、交付很崩」的坑。</p>
-        <p class="card-insight">先按交付链路（主图/详情/活动页）列必须项，再对照报告里的可用性结论，别被功能清单带跑。</p>
-        <a class="card-link" href="https://www.zcool.com.cn/article/ZMTgzNTAzNg==.html" target="_blank" rel="noopener noreferrer">查看原文 · 站酷 · 前天</a>
-      </article>
-    </div>
-  </section>
-
-  <section class="section" id="sec-bigtech">
-    <div class="section-header">
-      <div class="section-title-cn">大厂 AI 场景</div>
-      <p class="section-desc">大厂产品与设计场景落地</p>
-    </div>
-    <div class="cards" data-section="bigtech">
-      <article class="card">
-        <h3 class="card-title">iOS 27.3 线索：HomeView 或接入 ChatGPT / Claude</h3>
-        <p class="card-summary">IT之家（昨天）梳理 iOS 27.3 代码中的 Conversational Apps 类别线索，HomeView 有望支持第三方对话式 AI。对车机/大屏/桌面级对话界面的信息架构与多 App 共存设计，值得提前改预期。</p>
-        <p class="card-insight">提前想清「系统助理 vs 第三方对话」的入口层级与权限提示，避免车机上堆两个聊天窗。</p>
-        <a class="card-link" href="https://www.ithome.com/1/022/984.htm" target="_blank" rel="noopener noreferrer">查看原文 · IT之家 · 昨天</a>
-      </article>
-      <article class="card">
-        <h3 class="card-title">腾讯 Miora 与 Ardot：创意工坊里降低设计门槛</h3>
-        <p class="card-summary">优设情报（前天）报道腾讯数字生态大会创意设计工坊：Miora 与 Ardot 把从灵感到可参赛交付的门槛压低，零基础也能完成作品。适合观察大厂如何把 AI 设计能力嵌进活动与生态，而不是只做演示页。</p>
-        <p class="card-insight">关注它们暴露的「模板→可编辑组件」边界，比看生成效果本身更有产品参考价值。</p>
-        <a class="card-link" href="https://www.uisdc.com/hangye/tencent-summit-2" target="_blank" rel="noopener noreferrer">查看原文 · 优设情报 · 前天</a>
+        <h3 class="card-title">为什么 AI 做的 UI 总有一股塑料感？先认这 6 个问题</h3>
+        <p class="card-summary">优设（今天）酸梅干超人把 VibeCoding 界面里常说的「AI 味」拆成六个能对上号的问题，这篇先讲清楚定义，怎么改会放到后面。一是规范错误：模型常按网页标准去「装」成 App，状态栏、底栏、字号和按钮尺寸对不上移动端规范，看起来像、用起来却不是。二是圆角泛滥，尤其在小屏上，又大又不统一，会把比例撑散。三是字体滥用，把英文排版逻辑套在中文上；苹方这类中文粗体笔画偏细，撑不起大标题的视觉重心。四是效果乱用，描边、渐变、投影、背景模糊在缺少风格约束时会被一起堆上。五是配图塑料：界面已经有 AI 感，再叠一张一眼能看出来的生成图，活人感会更弱，作者甚至认为配图是现阶段最不该交给 AI 的环节。六是动效失调，底栏切换本应几乎无效果、进内页才左右推入，模型却常随机加转场，用起来完整，看起来却总觉得不对。他的总结是：这不像初级设计师，按英文网页标准，在中文移动端上做了一次过度设计。</p>
+        <p class="card-insight">先拿这六条去对照稿件，比笼统说「去掉 AI 味」好用；作者也提醒，只靠 Skill 和提示词不够，还得自己盯设计细节。</p>
+        <a class="card-link" href="https://www.uisdc.com/ai-interface-mistakes" target="_blank" rel="noopener noreferrer">查看原文 · 优设网 · 今天</a>
       </article>
     </div>
   </section>
@@ -406,10 +392,10 @@ a:hover { color: var(--brand-3); }
     </div>
     <div class="cards" data-section="cases">
       <article class="card">
-        <h3 class="card-title">淘宝短剧 × 阿里 Wan：AI 品牌剧种草怎么跑</h3>
-        <p class="card-summary">极客公园（11.3）写淘宝短剧与 Wan 深化合作，用 AI 品牌剧做种草：剧情植入拉动进店与搜索。对品牌/电商视觉同学，是「叙事短片 + 商品转化」一体化的现成案例框架。</p>
-        <p class="card-insight">先定 15 秒内可懂的冲突与商品入镜时机，再谈模型与镜头；别先堆特效。</p>
-        <a class="card-link" href="https://www.geekpark.net/news/373391" target="_blank" rel="noopener noreferrer">查看原文 · 极客公园 · 11.3</a>
+        <h3 class="card-title">Fable 5.2 新案例：3D 短片、可切换的写作空间，还能用代码画画</h3>
+        <p class="card-summary">优设（今天）彭彭整理了 Claude Fable 5.2 上线后的第一批创作者作业，和昨天卡兹克那篇深测不是同一组例子。Riley Brown 只用一条提示词，就在 Blender 里搭出一间细节很满的创作者房间：书桌、MacBook、台灯都在，电脑屏幕上播的还是模型自己写的真实网页；整段 13 个镜头在同一场景里从黄昏转到破晓，再调用 10 张云端 GPU、花 52 分钟、5.75 美元渲染成 4K。Leon Lin 让 Fable 当导演、几个 Opus 5.5 子智能体协作，30 分钟做出 30 秒雪山瀑布短片。Claire Vo 做了一个线上写作空间：台灯、咖啡杯、WebGL 黑胶机和复古打字机摆在一起，还能切到火车车厢或纸质笔记本，写完直接导出排版图。更特别的是 Jake Eaton 的实验：不准调用任何生图模型，先给一位虚构画家写人生经历和画风，再写一两行到上千行的 Python，模拟厚涂和笔触，大约 70 万笔下去，网友说肌理和冷暖关系已经不像「程序在临摹名画」。官方演示里，它还能从一句话需求出发，把家用语音助手、USB 免提通话器和掌上电子宠物的规格、选型、PCB、外壳和嵌入式软件一起做完。文末也给了想先试手的提示词：直接说「制作一段展现你实力的最强视频」。</p>
+        <p class="card-insight">可以先当作品集看这几类结果——单场景长镜头、可切换主题的网页空间、以及不靠生图、只用代码控制笔触的画；真要复刻，提示词里把场景约束和「不许垫图」写死，会比只说「做得很美」更稳。</p>
+        <a class="card-link" href="https://www.uisdc.com/fable-aesthetic-leap" target="_blank" rel="noopener noreferrer">查看原文 · 优设网 · 今天</a>
       </article>
     </div>
   </section>
@@ -421,25 +407,10 @@ a:hover { color: var(--brand-3); }
     </div>
     <div class="cards" data-section="agent">
       <article class="card">
-        <h3 class="card-title">开源 AutoLoop：自动派活、执行和审批的 Agent 闭环</h3>
-        <p class="card-summary">优设（昨天）作者开源 AutoLoop——自动派活、执行与审批的 Agent 系统，呼应 DeepSeek Super-agent 思路。适合想把改稿催办、素材归档、周报拼装等重复活交给多 Agent、但保留人工拍板点的设计师。</p>
-        <p class="card-insight">先只托管 1–2 条低风险流水线，审批卡在「对外发送/覆盖正式文件」前，再扩面。</p>
-        <a class="card-link" href="https://www.uisdc.com/autoloop-open-source" target="_blank" rel="noopener noreferrer">查看原文 · 优设网 · 昨天</a>
-      </article>
-    </div>
-  </section>
-
-  <section class="section" id="sec-career">
-    <div class="section-header">
-      <div class="section-title-cn">职业与观点</div>
-      <p class="section-desc">职业发展与行业判断</p>
-    </div>
-    <div class="cards" data-section="career">
-      <article class="card">
-        <h3 class="card-title">大厂招聘开始查 AI 使用记录，设计师怎么证明能力？</h3>
-        <p class="card-summary">优设（昨天）讨论招聘侧核查候选人 AI 使用痕迹的趋势，建议用可复盘的决策过程、作品集叙事与清晰的人机协作边界，证明「不可替代」的部分。对正在投递或带新人的设计师很及时。</p>
-        <p class="card-insight">作品集里写清：你定了什么目标、否决了哪些 AI 方案、最终判断依据是什么。</p>
-        <a class="card-link" href="https://www.uisdc.com/token-interview-gate" target="_blank" rel="noopener noreferrer">查看原文 · 优设网 · 昨天</a>
+        <h3 class="card-title">Kubai Icons：库里没有的图标，让 Claude Code 按同一套规矩现画</h3>
+        <p class="card-summary">优设猎人（昨天）龙爪槐守望者介绍了带动效的图标库 Kubai Icons 新上的 Skill。库里找不到想要的图标时，可以直接叫 Claude Code 或 Codex 读取项目代码，先在库里找最接近的参考样本，再按同一套圆角、配色和悬停动效规则现场画一个新图标。新图标还会经过尺寸和层次检查，通过后就能导出成 React 或 Vue 代码塞进项目。作者的判断是：有了 AI 顺着既有规矩接着画，这个库实际上变成了可以无限扩充、风格还能对齐的图标系统，而不是再去拼一套对不上的新图标。</p>
+        <p class="card-insight">先把圆角、配色和动效规则写成库里的「规矩」，再让 Agent 照着补新图标；先对风格、再导出组件，比让它凭空画一套更容易用进现有产品。</p>
+        <a class="card-link" href="https://www.uisdc.com/hunter/0221689645.html" target="_blank" rel="noopener noreferrer">查看原文 · 优设网 · 昨天</a>
       </article>
     </div>
   </section>
@@ -451,10 +422,16 @@ a:hover { color: var(--brand-3); }
     </div>
     <div class="cards" data-section="basic">
       <article class="card">
-        <h3 class="card-title">UI 里的「背景框」到底是什么？文本/图标/组件尺寸一篇讲清</h3>
-        <p class="card-summary">优设（昨天）从文本、图标到组件，系统讲清背景框如何决定视觉重量与对齐。不依赖 AI，是拿掉模型仍成立的基础规范文，适合补齐走查时「说不清为什么不齐」的那一块。</p>
-        <p class="card-insight">走查时先标背景框边界再调字号；很多「挤」其实是框高不一致，不是字本身。</p>
-        <a class="card-link" href="https://www.uisdc.com/element-background-frame" target="_blank" rel="noopener noreferrer">查看原文 · 优设网 · 昨天</a>
+        <h3 class="card-title">从线性到 3D：先认清产品里常见的 10 种图标风格</h3>
+        <p class="card-summary">优设（今天）黑马青年按产品里的实际用法，把常见图标风格梳理成十种，方便对照，而不是追新词。最常见的是线性功能图标和面性功能图标，前者多为单色或用品牌色点缀，后者还有多色叠加和微渐变。接着是近些年更常见的轻质感：磨砂玻璃可以叠在扁平或立体图标上；微质感则比纯扁平多一层细节和真实感。晶白风常出现在金刚区，靠白色透明度和背景的关系做出层次。立体感包括 2.5D、伪 3D 和 3D 建模。再往后是插画风（把插画特征收进图标里做差异化）、主题化图标（跟着活动和节日变）、写实类图标（靠质感和光影还原物体），以及直接用产品实物图当图标——用得少，但在需要强调真实商品时仍会出现。文中只在立体感一节提到也可以借助 AI 完成建模，去掉这句，这十种分类本身仍然成立。</p>
+        <p class="card-insight">先按使用场景选风格，而不是十种都做一遍；同一产品里，功能入口保持线面统一，活动位和商品位再换成主题化或实物图，会比混用更稳。</p>
+        <a class="card-link" href="https://www.uisdc.com/common-icon-styles" target="_blank" rel="noopener noreferrer">查看原文 · 优设网 · 今天</a>
+      </article>
+      <article class="card">
+        <h3 class="card-title">中英品牌字体怎么配：先看中文性格，再找能应和的拉丁体</h3>
+        <p class="card-summary">优设行业稿（昨天）用一套「三维协调模型」，从视觉、文化和技术三层谈中英品牌字体配对。作者强调，这不是随便找一款中文黑体配一款拉丁无衬线体：两种文字的书写历史、字型结构和排版节奏本来就不一样，看起来都现代，放在同一版面上也不一定协调。更稳的做法是先看中文字体的性格——端点、笔画对比、中宫和内白——再去找能够应和它的拉丁字体，而不是让中文变成「被配上的另一套字」。视觉上，等线、低对比的黑体通常更适合无衬线拉丁体，高对比的宋体、明体则更适合有层次和书写感的拉丁体；中宫较宽的中文，也更容易和 x-height 较大、字腔清晰的拉丁体坐在一行里。文化层则提醒不要为了「长得像」而抹掉各自的书写习惯，方框结构的中文和沿基线排列的拉丁字母，要在同一版面里找到稳定的阅读节奏。文中举例多来自蒙纳字库，方法本身不绑某一家：先定中文气质，再谈配对。</p>
+        <p class="card-insight">配对时先把中文字体的端点、对比和中宫说清楚，再选拉丁体；先追求气质和阅读节奏一致，比只看「都是黑体」更不容易配歪。</p>
+        <a class="card-link" href="https://www.uisdc.com/hangye/en-cn" target="_blank" rel="noopener noreferrer">查看原文 · 优设网 · 昨天</a>
       </article>
     </div>
   </section>
@@ -462,30 +439,18 @@ a:hover { color: var(--brand-3); }
   <section class="section" id="sec-tools">
     <div class="section-header">
       <div class="section-title-cn">AI 工具与产品</div>
-      <p class="section-desc">可上手的工具与产品更新</p>
+      <p class="section-desc">新工具、模型与可用产品</p>
     </div>
     <div class="cards" data-section="tools">
       <article class="card">
-        <h3 class="card-title">GPT-Image-2.6 全量：原生 GIF、直出 SVG，Astra 也露面</h3>
-        <p class="card-summary">量子位（昨天）：Images 2.6 全量开放，原生 GIF、直出 SVG，API 拆分复杂度/画质；Flare 偏海报电商排版，Sunburst 偏多轮一致性。设计师可直接拿来做图标组件、动图与电商主视觉草稿。</p>
-        <p class="card-insight">图标/线稿优先试 SVG 直出；电商主图用 Flare 约束版式，少靠纯文生图碰运气。</p>
-        <a class="card-link" href="https://www.qbitai.com/2026/11/507707.html" target="_blank" rel="noopener noreferrer">查看原文 · 量子位 · 昨天</a>
-      </article>
-      <article class="card">
-        <h3 class="card-title">Gemini Omni 1.2 Flash：原生 15 秒视频，较 1.1 降价约 30%</h3>
-        <p class="card-summary">IT之家（今天）：Gemini Omni 1.2 Flash 原生最长 15 秒，多轮编辑与参考一致性增强，720p 单价下调约 30%。适合产品演示、动效草稿与短叙事，把「出片成本」再压一截。</p>
-        <p class="card-insight">先用参考帧锁角色/场景，再多轮改镜头；15 秒内讲清一个卖点就够。</p>
-        <a class="card-link" href="https://www.ithome.com/1/023/026.htm" target="_blank" rel="noopener noreferrer">查看原文 · IT之家 · 今天</a>
+        <h3 class="card-title">Seedance 2.5 flash：速度翻倍、价格更低，适合先批量出片</h3>
+        <p class="card-summary">IT之家（昨天）报道，火山引擎推出 Seedance 2.5 flash。官方的定位很明确：效果是目前最接近旗舰 Seedance 2.5 的一档，生成速度提升一倍，价格更低，面向高频创作和批量内容。以 720P 文生视频、图生视频为例，flash 约为 0.99 元/秒，比 2.5 低大约 34%。单段最长 30 秒，一次最多可输入 10 张图片、5 段视频和 5 段音频，分辨率提供 480P 和 720P。即日起会陆续登上即梦、LibTV、Updream、Creao AI、TapNow 等平台，API 计划在 11 月 15 日上线火山方舟。家族里现在分成两档：旗舰 2.5 走更高视听要求和 1080P、4K，也可先用 Draft 模式出 480P 样片再出正片；flash 则用来快速试版本、跑批量。官方还称它整体效果优于上一代旗舰 2.0，在指令遵循、物理运动和音频表现上保持了接近 2.5 的水准。</p>
+        <p class="card-insight">日常批量出片和多版本试剪，可以先用 flash 降低单次成本；真正要 1080P 或 4K 成片，再回到旗舰 2.5，并尽量先用低分辨率样片把分镜定住。</p>
+        <a class="card-link" href="https://www.ithome.com/1/026/069.htm" target="_blank" rel="noopener noreferrer">查看原文 · IT之家 · 昨天</a>
       </article>
     </div>
   </section>
 </main>
-
-<footer class="footer">
-    <p class="footer-text">
-        共 11 条精选资讯 · 数据源：优设网 + 站酷 + 量子位 + 极客公园 + IT之家智能时代<br>
-    报告窗口：11.3–11.6 · 生成于 11.6（周五）· 五源均已尝试；极客公园首页 403，改用专栏/新闻 ID；小红书因 CDP 授权弹窗超时跳过</p>
-</footer>
 
 <script>
 function getReportDate() {
