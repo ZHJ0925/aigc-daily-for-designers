@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>2026.11.13 的 AIGC 设计日报</title>
+<title>2026.11.20 的 AIGC 设计日报</title>
 <style>
 :root {
   --bg:           #070707;
@@ -324,14 +324,13 @@ a:hover { color: var(--brand-3); }
 
 <body>
 
-
 <div class="hero">
   <div class="hero-inner">
     <div class="hero-badge"><span class="dot"></span><span>AI · DESIGN · 硅基流动风格</span></div>
-    <h1 class="hero-title">2026.11.13 的 AIGC 设计日报</h1>
-    <p class="hero-lead">周五窗口：优设把 VibeCoding 界面里那股「塑料感」拆成六个能对上号的问题，从规范、圆角、中英字体，一直到配图和动效；另一篇把产品里常见的十种图标风格，从线性理到实物图。案例是 Fable 5.2 上线后的第一批创作者作业，有 3D 短片、可切换主题的写作空间，也有纯代码画出的油画。Agent 面是 Kubai Icons 的新 Skill，库里找不到的图标可以按同一套规矩现画。基础还有一篇中英品牌字体怎么配的方法；工具向是火山引擎刚推出的 Seedance 2.5 flash，速度更快，更适合批量出片。</p>
+    <h1 class="hero-title">2026.11.20 的 AIGC 设计日报</h1>
+    <p class="hero-lead">周五早上，优设猎人新写了两条很具体的细节：Figma 画布里可以同时勾选最多三个生图模型，同一句提示词并行出多版再选进画布；微信订阅号列表多了「小微 AI 摘要」，读者省了筛选，创作者却担心原文再也没人点。昨天 Clip 设计夹把设计师用 Agent 提效拆成了可复用 Skill，作者坦言视觉仍不及格，但用组件库搭框架已经能省时间。Fable 5.2 的实测则是先写 PRD 和 GUI 文档，再一句话交出一个能玩的 HTML 游戏。IT之家看到 Canva 上线了「AI 开关」，免费和 Pro 都能关掉绝大部分生成式功能。</p>
     <div class="hero-meta">
-      <span>BEIJING · 11.13</span>
+      <span>BEIJING · 11.20</span>
     <span>优设 · 站酷 · 量子位 · 极客公园 · IT之家智能时代</span>
     </div>
     <div class="hero-actions">
@@ -344,7 +343,7 @@ a:hover { color: var(--brand-3); }
 <section class="editorial">
   <div class="editorial-inner">
     <span class="editorial-badge">主编按语</span>
-    <p class="editorial-text">周五：实战先看 <strong>VibeCoding 界面为什么总像「塑料」</strong>——不是感觉不对，而是规范、圆角、字体、效果、配图和动效这六处经常一起翻车；作者说怎么改会放到下篇，但这六个问题已经能拿去对照稿件。案例是 <strong>Fable 5.2 的第一批创作者作业</strong>，和昨天卡兹克那篇深测不是同一组例子，这里有 3D 房间短片、可切换主题的写作空间，也有不调用生图模型、纯代码画的油画。Agent 面是 Kubai Icons 的 Skill：库里没有的图标，让 Claude Code 或 Codex 按同一套圆角、配色和悬停动效现画，再导出成组件。基础是十种常见图标风格，以及中英品牌字体配对的三维协调模型——先看中文性格，再找能应和的拉丁体。工具向是 <strong>Seedance 2.5 flash</strong>，效果接近旗舰，速度翻倍、价格更低，会陆续上即梦等平台。站酷窗口内仍无新的带日期 AI×设计稿；极客公园首页 403，早知道里的 Claude 白板套件与 11.11 同题未再收；量子位首页可访问，H3-Image 开源实测与 11.11 同题未再收；优设情报头条多为昨日已报的 Adobe 实验、文心 5.5，或 GPT-Live / 元宝搜索 / DeepL 等非本期设计向，未再收；小红书未找到可标注日期的公开笔记，跳过未编造。</p>
+    <p class="editorial-text">周五：优设细节猎人夜里更新了两条值得跟。一条是 <strong>Figma Design 画布里可同时勾选最多三个生图模型</strong>，同一句提示词并行出多版，选定后直接落进画布，比在同一个模型里改十遍提示词更接近「先出几版飞机稿再对比」。另一条拆了微信订阅号列表里的「小微 AI 摘要」——几秒把常看公众号收成两三句，微信在每段摘要上方挂了原文卡片做折中，创作者仍要担心阅读和广告被截走。昨天 Clip 设计夹那篇 Agent 提效更适合当工作流来看：作者 Ye_susu 自己写了 design-system-use、icon-generate、flow-connect 等 Skill，结论是视觉仍然不及格，但 B 端用组件库搭框架、检索图标库、串页面流程已经能省手活；复杂任务要用更强的模型，也提醒频繁切换会很难进入心流。Fable 5.2 实测和本周一的「12 关街机」不是同一组跟做，侧重点是先出 PRD 和 GUI 文档，再交出无外部资源、可直接打开的 HTML 游戏。IT之家：<strong>Canva 上线 AI 开关</strong>，免费和 Pro 都能关绝大多数生成式功能，背景移除和魔法抓取还在，素材库还可以降低 AI 图出现概率。站酷发现页窗口内没有 72 小时内的新发布，11 月 18 日推荐的「土豆人」设计周稿首次发布仍是 11 月 12 日，按更新时间未入选；极客公园首页仍 403，早知道 11 月 19 日那期是 WorkBuddy DAU、英伟达诉讼和 DeepSeek 计费，无合适设计向新稿；量子位可访问，Kling Image 4.0 实测与已报可灵 4.0 同题、Design Arena 榜单偏跑分、AI 长片赛事通稿未入选；优设情报里 Recraft 字体库、Figma MCP 访问白名单、VSCO 桌面版没有独立可引用链接，未整收；Astra、Genie 4、Stitch Loop 昨日已报。小红书浏览环境未连上 Chrome，跳过未编造。</p>
   </div>
 </section>
 
@@ -354,7 +353,7 @@ a:hover { color: var(--brand-3); }
 
 <nav class="toc">
     <div class="toc-inner">
-    <span class="toc-label">目录</span><a class="toc-link" href="#sec-practice">AI 实战与教程</a><a class="toc-link" href="#sec-cases">案例灵感</a><a class="toc-link" href="#sec-agent">Agent 与编程实战</a><a class="toc-link" href="#sec-basic">设计基础干货</a><a class="toc-link" href="#sec-tools">AI 工具与产品</a><button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="切换深色 / 浅色">
+    <span class="toc-label">目录</span><a class="toc-link" href="#sec-practice">AI 实战与教程</a><a class="toc-link" href="#sec-agent">Agent 与编程实战</a><a class="toc-link" href="#sec-career">职业与观点</a><a class="toc-link" href="#sec-tools">AI 工具与产品</a><button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="切换深色 / 浅色">
       <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
       <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg>
     </button>
@@ -377,25 +376,16 @@ a:hover { color: var(--brand-3); }
     </div>
     <div class="cards" data-section="practice">
       <article class="card">
-        <h3 class="card-title">为什么 AI 做的 UI 总有一股塑料感？先认这 6 个问题</h3>
-        <p class="card-summary">优设（今天）酸梅干超人把 VibeCoding 界面里常说的「AI 味」拆成六个能对上号的问题，这篇先讲清楚定义，怎么改会放到后面。一是规范错误：模型常按网页标准去「装」成 App，状态栏、底栏、字号和按钮尺寸对不上移动端规范，看起来像、用起来却不是。二是圆角泛滥，尤其在小屏上，又大又不统一，会把比例撑散。三是字体滥用，把英文排版逻辑套在中文上；苹方这类中文粗体笔画偏细，撑不起大标题的视觉重心。四是效果乱用，描边、渐变、投影、背景模糊在缺少风格约束时会被一起堆上。五是配图塑料：界面已经有 AI 感，再叠一张一眼能看出来的生成图，活人感会更弱，作者甚至认为配图是现阶段最不该交给 AI 的环节。六是动效失调，底栏切换本应几乎无效果、进内页才左右推入，模型却常随机加转场，用起来完整，看起来却总觉得不对。他的总结是：这不像初级设计师，按英文网页标准，在中文移动端上做了一次过度设计。</p>
-        <p class="card-insight">先拿这六条去对照稿件，比笼统说「去掉 AI 味」好用；作者也提醒，只靠 Skill 和提示词不够，还得自己盯设计细节。</p>
-        <a class="card-link" href="https://www.uisdc.com/ai-interface-mistakes" target="_blank" rel="noopener noreferrer">查看原文 · 优设网 · 今天</a>
+        <h3 class="card-title">Figma 生图一次勾选 3 个模型：同一句提示词，对着结果选</h3>
+        <p class="card-summary">优设细节猎人（昨天，11 月 19 日 23:49）龙爪槐守望者写到，在 Figma Design 的画布里，不论从零生图还是选中一张图做局部修改，都可以同时勾选最多三个不同的图像模型，例如 Nano Banana 2 Lite、Nano Banana 2 和 GPT Image 2.5 Sunburst。敲入同一句提示词后，系统会并行跑出多张不同风格和质感的结果供你挑选，选中满意的那张可以直接落进画布。以前常见的做法是生成不满意就改一遍提示词再抽一次，或者来回切换模型反复试错；这一下更接近设计工作里「先出几版飞机稿、摆在一起对比」的习惯。</p>
+        <p class="card-insight">与其在同一个模型里把提示词改十遍，不如先并列出几版不同气质的结果，选定后再往画布里精修。</p>
+        <a class="card-link" href="https://www.uisdc.com/hunter/0221690364.html" target="_blank" rel="noopener noreferrer">查看原文 · 优设网 · 昨天</a>
       </article>
-    </div>
-  </section>
-
-  <section class="section" id="sec-cases">
-    <div class="section-header">
-      <div class="section-title-cn">案例灵感</div>
-      <p class="section-desc">可借鉴的视觉与叙事案例</p>
-    </div>
-    <div class="cards" data-section="cases">
       <article class="card">
-        <h3 class="card-title">Fable 5.2 新案例：3D 短片、可切换的写作空间，还能用代码画画</h3>
-        <p class="card-summary">优设（今天）彭彭整理了 Claude Fable 5.2 上线后的第一批创作者作业，和昨天卡兹克那篇深测不是同一组例子。Riley Brown 只用一条提示词，就在 Blender 里搭出一间细节很满的创作者房间：书桌、MacBook、台灯都在，电脑屏幕上播的还是模型自己写的真实网页；整段 13 个镜头在同一场景里从黄昏转到破晓，再调用 10 张云端 GPU、花 52 分钟、5.75 美元渲染成 4K。Leon Lin 让 Fable 当导演、几个 Opus 5.5 子智能体协作，30 分钟做出 30 秒雪山瀑布短片。Claire Vo 做了一个线上写作空间：台灯、咖啡杯、WebGL 黑胶机和复古打字机摆在一起，还能切到火车车厢或纸质笔记本，写完直接导出排版图。更特别的是 Jake Eaton 的实验：不准调用任何生图模型，先给一位虚构画家写人生经历和画风，再写一两行到上千行的 Python，模拟厚涂和笔触，大约 70 万笔下去，网友说肌理和冷暖关系已经不像「程序在临摹名画」。官方演示里，它还能从一句话需求出发，把家用语音助手、USB 免提通话器和掌上电子宠物的规格、选型、PCB、外壳和嵌入式软件一起做完。文末也给了想先试手的提示词：直接说「制作一段展现你实力的最强视频」。</p>
-        <p class="card-insight">可以先当作品集看这几类结果——单场景长镜头、可切换主题的网页空间、以及不靠生图、只用代码控制笔触的画；真要复刻，提示词里把场景约束和「不许垫图」写死，会比只说「做得很美」更稳。</p>
-        <a class="card-link" href="https://www.uisdc.com/fable-aesthetic-leap" target="_blank" rel="noopener noreferrer">查看原文 · 优设网 · 今天</a>
+        <h3 class="card-title">先写 PRD 和 GUI 文档，再让 Fable 5.2 吐出一个能玩的 HTML 游戏</h3>
+        <p class="card-summary">优设（昨天）实测 Claude Fable 5.2：作者只提了一句「做一个能玩的网页版游戏，不要素材包、不要外链，最后给我一个双击就能打开的 HTML 文件」，但没有立刻让它写代码，而是先让它出一份 PRD 和一份 GUI 设计文档，视觉和玩法定稿后才动手开发。实测做了三个方向：赛博霓虹赛车、武侠行镖 RPG，以及一段 50 秒、8 个镜头的自我介绍动效；旁边还放了上一轮用 Gemini 4 Argon 做的同题材霓虹机车作为对照。这三件加起来体积不到几百 KB，没有位图、字体包或外部音频，画面由代码绘制，声音用 WebAudio 现场算。RPG 能维持资源循环和成长曲线；介绍片里吉祥物「小寓」每镜一句，作者觉得是可以直接用的物料，而不只是演示。这和本周一收过的「一晚上搓出 12 关街机」不是同一组跟做，侧重点在可交互网页和文档先行。</p>
+        <p class="card-insight">先把玩法和视觉写成文档再让模型写代码，比一上来就要一个成品 HTML，更容易判断它到底有没有把规则做完整。</p>
+        <a class="card-link" href="https://www.uisdc.com/fable-game-test" target="_blank" rel="noopener noreferrer">查看原文 · 优设网 · 昨天</a>
       </article>
     </div>
   </section>
@@ -407,31 +397,25 @@ a:hover { color: var(--brand-3); }
     </div>
     <div class="cards" data-section="agent">
       <article class="card">
-        <h3 class="card-title">Kubai Icons：库里没有的图标，让 Claude Code 按同一套规矩现画</h3>
-        <p class="card-summary">优设猎人（昨天）龙爪槐守望者介绍了带动效的图标库 Kubai Icons 新上的 Skill。库里找不到想要的图标时，可以直接叫 Claude Code 或 Codex 读取项目代码，先在库里找最接近的参考样本，再按同一套圆角、配色和悬停动效规则现场画一个新图标。新图标还会经过尺寸和层次检查，通过后就能导出成 React 或 Vue 代码塞进项目。作者的判断是：有了 AI 顺着既有规矩接着画，这个库实际上变成了可以无限扩充、风格还能对齐的图标系统，而不是再去拼一套对不上的新图标。</p>
-        <p class="card-insight">先把圆角、配色和动效规则写成库里的「规矩」，再让 Agent 照着补新图标；先对风格、再导出组件，比让它凭空画一套更容易用进现有产品。</p>
-        <a class="card-link" href="https://www.uisdc.com/hunter/0221689645.html" target="_blank" rel="noopener noreferrer">查看原文 · 优设网 · 昨天</a>
+        <h3 class="card-title">别指望 Agent 画出漂亮视觉：先写 Skill，让它按组件库搭框架</h3>
+        <p class="card-summary">优设 Clip 设计夹（昨天）刊出设计师 Ye_susu 的 Agent 提效实践。直接让 Figma Agent 指定组件库出稿，结果经常用错组件、擅自改名、分离实例，也不走文本样式和变量。作者没找到合适的现成方案，就自己写 Skill。第一套 design-system-use 用来约束组件用法，并把海外项目里的文本翻译、页面命名、画板尺寸、图层结构和自动布局习惯写进去——视觉仍低于及格线，但用来搭 B 端页面框架已经能省不少手活。图标方面，Figma Agent 不能编辑矢量路径，第三方 Agent 画出来也不怎么能用；于是改成 icon-generate：提供多个图标库，让 Agent 检索命中的 SVG 并按项目规范写入 Figma，作者再挑选和二次创意。限制也很清楚：库里多是线性和面性功能图标，复杂个性图标还得手绘；SVG 往往已经转曲，改圆角只能重绘。绘制页面流程这种「按交互稿把 UI 串起来」的工作，作者先做能力测试，再针对连线绕路的问题，用标注截图让 Agent 自己分类总结规则，写成 flow-connect。最后还尝试把整段需求设计做成 requirement-design Skill。作者的判断是：这套东西更适合偏组件和文字排版的 B 端；复杂任务要用更强的模型（文中用的是 5.6 Sol 高档及以上）；并且提醒频繁切换任务会很难进入心流。</p>
+        <p class="card-insight">先承认 Agent 的视觉还不靠谱，再把它限制在「按规范搭框架、检索图标、串流程」这些能用规则说清的步骤上；规则写不明白时，先标注截图让它自己归纳。</p>
+        <a class="card-link" href="https://www.uisdc.com/agent-design-workflow" target="_blank" rel="noopener noreferrer">查看原文 · 优设网 · 昨天</a>
       </article>
     </div>
   </section>
 
-  <section class="section" id="sec-basic">
+  <section class="section" id="sec-career">
     <div class="section-header">
-      <div class="section-title-cn">设计基础干货</div>
-      <p class="section-desc">去掉 AI 仍成立的基础方法</p>
+      <div class="section-title-cn">职业与观点</div>
+      <p class="section-desc">行业观察与设计师视角</p>
     </div>
-    <div class="cards" data-section="basic">
+    <div class="cards" data-section="career">
       <article class="card">
-        <h3 class="card-title">从线性到 3D：先认清产品里常见的 10 种图标风格</h3>
-        <p class="card-summary">优设（今天）黑马青年按产品里的实际用法，把常见图标风格梳理成十种，方便对照，而不是追新词。最常见的是线性功能图标和面性功能图标，前者多为单色或用品牌色点缀，后者还有多色叠加和微渐变。接着是近些年更常见的轻质感：磨砂玻璃可以叠在扁平或立体图标上；微质感则比纯扁平多一层细节和真实感。晶白风常出现在金刚区，靠白色透明度和背景的关系做出层次。立体感包括 2.5D、伪 3D 和 3D 建模。再往后是插画风（把插画特征收进图标里做差异化）、主题化图标（跟着活动和节日变）、写实类图标（靠质感和光影还原物体），以及直接用产品实物图当图标——用得少，但在需要强调真实商品时仍会出现。文中只在立体感一节提到也可以借助 AI 完成建模，去掉这句，这十种分类本身仍然成立。</p>
-        <p class="card-insight">先按使用场景选风格，而不是十种都做一遍；同一产品里，功能入口保持线面统一，活动位和商品位再换成主题化或实物图，会比混用更稳。</p>
-        <a class="card-link" href="https://www.uisdc.com/common-icon-styles" target="_blank" rel="noopener noreferrer">查看原文 · 优设网 · 今天</a>
-      </article>
-      <article class="card">
-        <h3 class="card-title">中英品牌字体怎么配：先看中文性格，再找能应和的拉丁体</h3>
-        <p class="card-summary">优设行业稿（昨天）用一套「三维协调模型」，从视觉、文化和技术三层谈中英品牌字体配对。作者强调，这不是随便找一款中文黑体配一款拉丁无衬线体：两种文字的书写历史、字型结构和排版节奏本来就不一样，看起来都现代，放在同一版面上也不一定协调。更稳的做法是先看中文字体的性格——端点、笔画对比、中宫和内白——再去找能够应和它的拉丁字体，而不是让中文变成「被配上的另一套字」。视觉上，等线、低对比的黑体通常更适合无衬线拉丁体，高对比的宋体、明体则更适合有层次和书写感的拉丁体；中宫较宽的中文，也更容易和 x-height 较大、字腔清晰的拉丁体坐在一行里。文化层则提醒不要为了「长得像」而抹掉各自的书写习惯，方框结构的中文和沿基线排列的拉丁字母，要在同一版面里找到稳定的阅读节奏。文中举例多来自蒙纳字库，方法本身不绑某一家：先定中文气质，再谈配对。</p>
-        <p class="card-insight">配对时先把中文字体的端点、对比和中宫说清楚，再选拉丁体；先追求气质和阅读节奏一致，比只看「都是黑体」更不容易配歪。</p>
-        <a class="card-link" href="https://www.uisdc.com/hangye/en-cn" target="_blank" rel="noopener noreferrer">查看原文 · 优设网 · 昨天</a>
+        <h3 class="card-title">微信给公众号加了 AI 摘要，创作者担心读者再也不点进原文</h3>
+        <p class="card-summary">优设细节猎人（今天，11 月 20 日 0:31）龙爪槐守望者拆了微信「公众号」订阅列表里的新入口：顶部常看头像最左侧多了一个绿眼睛「AI 摘要」，点开后拉起「小微 AI 测试版」对话框，自动发出总结请求，几秒内把常看公众号的新文章收成两三句。产品意图是帮读者省掉筛选、把人拉回阅读；但站在创作者一侧，读者如果在对话窗里就把观点看完，原文阅读量和底部广告曝光都会被截走。微信的折中是在每段总结上方挂一张带封面的原文跳转卡片，想用摘要勾起好奇心，再把人导回文章。</p>
+        <p class="card-insight">给信息流加 AI 摘要前，先想清楚阅读和分发还靠不靠「点进原文」；如果靠，摘要旁边必须留一条足够明确的回原文路径，而不是把正文替换掉。</p>
+        <a class="card-link" href="https://www.uisdc.com/hunter/0221690374.html" target="_blank" rel="noopener noreferrer">查看原文 · 优设网 · 今天</a>
       </article>
     </div>
   </section>
@@ -443,14 +427,17 @@ a:hover { color: var(--brand-3); }
     </div>
     <div class="cards" data-section="tools">
       <article class="card">
-        <h3 class="card-title">Seedance 2.5 flash：速度翻倍、价格更低，适合先批量出片</h3>
-        <p class="card-summary">IT之家（昨天）报道，火山引擎推出 Seedance 2.5 flash。官方的定位很明确：效果是目前最接近旗舰 Seedance 2.5 的一档，生成速度提升一倍，价格更低，面向高频创作和批量内容。以 720P 文生视频、图生视频为例，flash 约为 0.99 元/秒，比 2.5 低大约 34%。单段最长 30 秒，一次最多可输入 10 张图片、5 段视频和 5 段音频，分辨率提供 480P 和 720P。即日起会陆续登上即梦、LibTV、Updream、Creao AI、TapNow 等平台，API 计划在 11 月 15 日上线火山方舟。家族里现在分成两档：旗舰 2.5 走更高视听要求和 1080P、4K，也可先用 Draft 模式出 480P 样片再出正片；flash 则用来快速试版本、跑批量。官方还称它整体效果优于上一代旗舰 2.0，在指令遵循、物理运动和音频表现上保持了接近 2.5 的水准。</p>
-        <p class="card-insight">日常批量出片和多版本试剪，可以先用 flash 降低单次成本；真正要 1080P 或 4K 成片，再回到旗舰 2.5，并尽量先用低分辨率样片把分镜定住。</p>
-        <a class="card-link" href="https://www.ithome.com/1/026/069.htm" target="_blank" rel="noopener noreferrer">查看原文 · IT之家 · 昨天</a>
+        <h3 class="card-title">Canva 出了「AI 开关」：大部分生成式功能能一键关掉</h3>
+        <p class="card-summary">IT之家（昨天，11 月 19 日 21:01）报道，Canva（可画）宣布推出「AI 开关」，免费版和 Pro 版用户都可以统一关闭或开启绝大多数 AI 工具。打开后会移除大部分生成式功能，但「背景移除」「魔法抓取」这类 AI 驱动的图像编辑工具仍然保留。素材库里还可以打开「减少 AI」，降低搜索时碰到 AI 生成图像的概率。两项设置都在「个人资料」里调整；如果要管理整个平台的生成式 AI，则进入设置里的「权限」，找到「启用生成式 AI 功能」。</p>
+        <p class="card-insight">设计工具开始把「用不用 AI」做成总闸，而不只是一个个功能入口；如果团队或客户不希望稿件带上生成痕迹，先确认总开关和素材库过滤分别管到哪一层。</p>
+        <a class="card-link" href="https://www.ithome.com/1/029/677.htm" target="_blank" rel="noopener noreferrer">查看原文 · IT之家 · 昨天</a>
       </article>
     </div>
   </section>
+
 </main>
+
+
 
 <script>
 function getReportDate() {
