@@ -1,0 +1,99 @@
+{
+  "date": "2026.11.25",
+  "total_cards": 8,
+  "section_counts": {
+    "sec-practice": 2,
+    "sec-bigtech": 1,
+    "sec-cases": 1,
+    "sec-agent": 2,
+    "sec-tools": 2
+  },
+  "editorial": "周三：优设连发绘本/科普视频 Skill、九个高审美生图 Skill、多模型调度长文，以及 11 月设计周刊第二波；优设情报收 Muse/豆包小豆顶部居中的个人智能体界面；IT之家商汤 SenseNova U1.6 开源自修正。站酷无准确时间合适新稿；量子位窗口内无设计向新稿；极客公园首页仍不易打开，剪映黑客松与已报同题未再收。小红书公开检索收录两条昨天笔记。",
+  "cards": [
+    {
+      "section": "sec-practice",
+      "title": "不用抽卡做绘本和科普视频：透明底素材加代码动效，角色还能沿用",
+      "url": "https://www.uisdc.com/storybook-animation-skill",
+      "source": "优设网 · 昨天"
+    },
+    {
+      "section": "sec-practice",
+      "title": "九个高审美生图 Skill：同一套工具，换一张层次清楚的照片，结果完全不同",
+      "url": "https://www.uisdc.com/aesthetic-image-skills",
+      "source": "优设网 · 昨天"
+    },
+    {
+      "section": "sec-bigtech",
+      "title": "Muse 和豆包小豆：个人智能体开始把头像放到顶部居中",
+      "url": "https://www.uisdc.com/hunter/0221690732.html",
+      "source": "优设情报 · 约8小时前"
+    },
+    {
+      "section": "sec-cases",
+      "title": "果冻风旅行 App：小红书上的一条 AIGC 设计练习",
+      "url": "https://www.xiaohongshu.com/search_result/6b055df1000000002b0337ce?xsec_token=ABsDT8RjAcBAcIZZrTpPEG_vCVT3AlAVhaETAGDWtn0JI=&xsec_source=",
+      "source": "小红书 · 昨天"
+    },
+    {
+      "section": "sec-agent",
+      "title": "把 Claude、GPT、Gemini 当成一个团队：中间那个位置，审美和双手都要在",
+      "url": "https://www.uisdc.com/multi-model-orchestration",
+      "source": "优设网 · 昨天"
+    },
+    {
+      "section": "sec-agent",
+      "title": "会自己评审、再改一版的工业设计创意 Agent",
+      "url": "https://www.xiaohongshu.com/search_result/6b05a8fb000000002c00ffdf?xsec_token=ABsDT8RjAcBAcIZZrTpPEG_oXQZCK04AUmGvMNzqQwfuI=&xsec_source=",
+      "source": "小红书 · 昨天"
+    },
+    {
+      "section": "sec-tools",
+      "title": "商汤 SenseNova U1.6：先出一张，再对照提示把字和版式改对",
+      "url": "https://www.ithome.com/1/031/465.htm",
+      "source": "IT之家 · 昨天"
+    },
+    {
+      "section": "sec-tools",
+      "title": "11 月设计周刊第二波：Figma Specs、Sketch 变体，以及 Canva 允许关掉 AI",
+      "url": "https://www.uisdc.com/design-weekly-46",
+      "source": "优设网 · 昨天"
+    }
+  ],
+  "sources_attempted": [
+    "优设网",
+    "优设情报",
+    "站酷",
+    "量子位",
+    "极客公园",
+    "IT之家智能时代",
+    "小红书"
+  ],
+  "sources_notes": {
+    "优设网": "成功，收录 4 篇 11 月 24 日新稿",
+    "优设情报": "成功，收录 Muse/小豆；特斯拉 FSD 15 已报；OPPO 小布已出 72h 窗",
+    "站酷": "发现页已抓，条目缺少准确发布时间，未整收",
+    "量子位": "已抓 11 月 24–25 日更新，窗口内无合适设计向新稿",
+    "极客公园": "首页仍不易打开（403/空），以检索兜底；剪映 Hub 黑客松与已报量子位同题未再收，MVLAND 偏行业数据未整收",
+    "IT之家智能时代": "成功收录 SenseNova U1.6；首页 Claude Artifacts「安装为应用」未能解析到独立 ithome.com 链接，未整收",
+    "小红书": "浏览器公开检索成功，收录 2 条；另有两条仅标题的能力/价值讨论未整收"
+  },
+  "sources_failed": [],
+  "notes": "72h 窗口起始 2026-11-22 07:37 CST。小红书列表页链接保留原样 xsec_token 与空的 xsec_source=。不带 token 的 /explore/{id} 会 404，未编造。",
+  "output_paths": {
+    "daily_html": "/workspace/AI日报/2026.11.25日报.html",
+    "ascii_html": "/workspace/AI日报/2026.11.25.html",
+    "summary_json": "/workspace/AI日报/2026.11.25_summary.json",
+    "index": "/workspace/AI日报/index.html"
+  },
+  "scripts": {
+    "batch_convert_to_sf.py": "SKIP minimal SF for 2026.11.25日报.html (expected); index Shanghai redirector OK",
+    "dedupe_sections.py": "SKIP no sec-top (expected)",
+    "check_cross_day_dupes.py": "PASS no cross-day dupes"
+  },
+  "retention_deleted": [
+    "2026.11.18.html",
+    "2026.11.18_summary.json",
+    "2026.11.18日报.html"
+  ],
+  "html_ready_for_chat_attach": true
+}
