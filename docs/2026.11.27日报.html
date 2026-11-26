@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026.11.27 的 AIGC 设计日报</title>
+<style>
+:root {
+  --bg:           #070707;
+  --bg-panel:     #14121f;
+  --bg-card:      #1D1F2C;
+  --bg-elev:      #252736;
+  --text:         #DEDFEE;
+  --text-2:       #9AA6B8;
+  --text-3:       #64748B;
+  --brand:        #6E29F5;
+  --brand-2:      #8A35FF;
+  --brand-3:      #C966F5;
+  --cyan:         #02F6F7;
+  --green:        #3DE887;
+  --border:       rgba(255,255,255,.07);
+  --border-2:     rgba(255,255,255,.14);
+  --border-brand: rgba(110,41,246,.32);
+  --gradient-brand: linear-gradient(110deg,#6e29f5 0%,#8a35ff 48%,#c966f5 100%);
+  --gradient-glow: radial-gradient(80% 60% at 50% 0%,rgba(110,41,246,.25) 0%,transparent 60%);
+  --shadow-glow:  0 12px 32px rgba(110,41,246,.18);
+  --radius:       16px;
+  --radius-lg:    24px;
+  --radius-pill:  120px;
+  --max-w:        1080px;
+  --sans:         -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", "Segoe UI", sans-serif;
+  --mono:         ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+body.light {
+  --bg:           #f5f5f8;
+  --bg-panel:     #ffffff;
+  --bg-card:      #ffffff;
+  --bg-elev:      #ffffff;
+  --text:         #1a1a1a;
+  --text-2:       #4a4a5e;
+  --text-3:       #6b6b7b;
+  --border:       rgba(0,0,0,.06);
+  --border-2:     rgba(0,0,0,.12);
+  --border-brand: rgba(110,41,246,.24);
+  --gradient-glow: radial-gradient(80% 60% at 50% 0%,rgba(110,41,246,.10) 0%,transparent 60%);
+  --shadow-glow:  0 12px 32px rgba(110,41,246,.12);
+}
+body.light::before {
+  background:
+    radial-gradient(60% 40% at 20% 0%, rgba(110,41,246,.08) 0%, transparent 50%),
+    radial-gradient(40% 30% at 90% 10%, rgba(2,246,247,.05) 0%, transparent 50%),
+    radial-gradient(50% 35% at 50% 100%, rgba(110,41,246,.05) 0%, transparent 50%);
+}
+body.light::after {
+  background-image: linear-gradient(rgba(0,0,0,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,.04) 1px, transparent 1px);
+  mask-image: radial-gradient(80% 60% at 50% 30%, black 0%, transparent 80%);
+}
+body.light .hero-badge { background: rgba(110,41,246,.10); color: #6E29F5; border-color: rgba(110,41,246,.24); }
+body.light .toc { background: rgba(245,245,248,.85); }
+body.light .editorial-inner { background: linear-gradient(135deg, rgba(110,41,246,.08) 0%, rgba(2,246,247,.03) 100%); }
+body.light .editorial-text strong { color: #6E29F5; }
+body.light .filter-inner { background: rgba(255,255,255,.8); }
+body.light .card-title { color: var(--text); }
+body.light .card-summary { color: var(--text-2); }
+body.light .card-insight { color: #6E29F5; background: rgba(110,41,246,.06); }
+body.light .card { background: linear-gradient(180deg, #ffffff 0%, #fafafe 100%); }
+body.light .hero-btn { color: #fff; }
+body.light .date-pill { background: rgba(255,255,255,.7); }
+body.light .date-pill.active { background: #ffffff; color: #6E29F5; border-color: #6E29F5; box-shadow: 0 4px 14px rgba(110,41,246,.18); }
+body.light .date-nav-arrow:hover { background: rgba(0,0,0,.04); }
+body.light .toc-link:hover { background: rgba(110,41,246,.08); }
+body.light .theme-toggle { background: rgba(0,0,0,.04); }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.65;
+  overflow-x: clip;
+  position: relative;
+  min-height: 100vh;
+}
+body::before {
+  content: "";
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(60% 40% at 20% 0%, rgba(110,41,246,.18) 0%, transparent 50%),
+    radial-gradient(40% 30% at 90% 10%, rgba(2,246,247,.08) 0%, transparent 50%),
+    radial-gradient(50% 35% at 50% 100%, rgba(110,41,246,.10) 0%, transparent 50%);
+}
+body::after {
+  content: "";
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background-image: linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+  background-size: 40px 40px;
+  mask-image: radial-gradient(80% 60% at 50% 30%, black 0%, transparent 80%);
+}
+a { color: var(--cyan); text-decoration: none; }
+a:hover { color: var(--brand-3); }
+.hero { position: relative; z-index: 2; padding: 80px 32px 40px; text-align: center; }
+.hero-inner { max-width: var(--max-w); margin: 0 auto; }
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 18px;
+  background: rgba(110,41,246,.12);
+  border: 1px solid var(--border-brand);
+  border-radius: var(--radius-pill);
+  font-size: 12px; color: #C7A8FF; font-weight: 500;
+  margin-bottom: 24px;
+  letter-spacing: 0.04em;
+}
+.hero-badge .dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--green); box-shadow: 0 0 8px var(--green);
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse { 50% { opacity: .5; transform: scale(.9); } }
+.hero-title {
+  font-size: 56px; font-weight: 700; line-height: 1.1;
+  margin-bottom: 20px;
+  background: var(--gradient-brand);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.02em;
+}
+.hero-lead { font-size: 16px; color: var(--text-2); line-height: 1.7; max-width: 640px; margin: 0 auto 32px; }
+.hero-meta {
+  font-size: 12px; color: var(--text-3);
+  display: flex; gap: 24px; justify-content: center;
+  font-family: var(--mono); letter-spacing: 0.04em;
+}
+.hero-actions { display: flex; justify-content: center; margin-top: 24px; }
+.hero-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 10px 22px;
+  background: var(--gradient-brand);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-pill);
+  font-size: 14px; font-weight: 600;
+  letter-spacing: 0.02em;
+  box-shadow: var(--shadow-glow);
+  transition: transform .15s ease, opacity .15s ease, color .15s ease;
+}
+.hero-btn:hover { color: #fff; opacity: .92; transform: translateY(-1px); }
+
+.editorial { position: relative; z-index: 2; max-width: var(--max-w); margin: 32px auto 0; padding: 0 32px; }
+.editorial-inner {
+  background: linear-gradient(135deg, rgba(110,41,246,.10) 0%, rgba(2,246,247,.04) 100%);
+  border: 1px solid var(--border-brand);
+  border-radius: var(--radius);
+  padding: 20px 28px;
+  display: flex; gap: 16px; align-items: flex-start;
+}
+.editorial-badge {
+  display: inline-block; padding: 4px 12px;
+  background: var(--gradient-brand); border-radius: var(--radius-pill);
+  font-size: 11px; font-weight: 600; color: white;
+  letter-spacing: 0.04em; flex-shrink: 0; margin-top: 2px;
+}
+.editorial-text { font-size: 14px; color: var(--text); line-height: 1.7; }
+.editorial-text strong { color: #C7A8FF; font-weight: 600; }
+.date-switcher { position: relative; z-index: 3; max-width: var(--max-w); margin: 32px auto 0; padding: 0 32px; }
+.date-switcher-inner {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 16px 0; overflow-x: auto; scrollbar-width: none;
+}
+.date-switcher-inner::-webkit-scrollbar { display: none; }
+.date-nav-arrow {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px; border-radius: 50%;
+  color: var(--text-2); cursor: pointer; user-select: none;
+  transition: all .2s ease;
+}
+.date-nav-arrow:hover { color: var(--text); background: rgba(255,255,255,.06); }
+.date-pill {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 56px; height: 36px; padding: 0 16px;
+  font-family: var(--mono); font-size: 13px; font-weight: 500;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border-2);
+  background: rgba(29,31,44,.4);
+  color: var(--text-2);
+  cursor: pointer; transition: all .25s ease;
+  white-space: nowrap; flex-shrink: 0;
+  text-decoration: none;
+}
+.date-pill:hover { color: var(--text); border-color: var(--border-brand); background: rgba(110,41,246,.08); }
+.date-pill.active {
+  background: var(--gradient-brand); color: white; border-color: transparent;
+  box-shadow: 0 4px 16px rgba(110,41,246,.4);
+}
+.date-pill.future { opacity: .35; pointer-events: none; }
+.toc {
+  position: sticky; top: 0; z-index: 10;
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  background: rgba(7,7,7,.85);
+  border-bottom: 1px solid var(--border);
+}
+.toc-inner {
+  max-width: var(--max-w); margin: 0 auto;
+  padding: 14px 32px;
+  display: flex; align-items: center; gap: 8px;
+  overflow-x: auto; scrollbar-width: none;
+}
+.toc-inner::-webkit-scrollbar { display: none; }
+.toc-label {
+  font-size: 11px; font-weight: 600;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--text-3); margin-right: 12px;
+  flex-shrink: 0; font-family: var(--mono);
+}
+.toc-link {
+  font-size: 13px; font-weight: 500;
+  padding: 6px 14px; border-radius: var(--radius-pill);
+  color: var(--text-2); white-space: nowrap;
+  transition: all .2s ease; flex-shrink: 0;
+}
+.toc-link:hover { color: var(--text); background: rgba(110,41,246,.12); }
+.theme-toggle {
+  margin-left: auto;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 36px; height: 36px; border-radius: 50%;
+  background: rgba(255,255,255,.04);
+  border: 1px solid var(--border-2);
+  color: var(--text-2); cursor: pointer;
+  transition: all .2s ease; flex-shrink: 0;
+}
+.theme-toggle:hover { color: var(--text); border-color: var(--border-brand); }
+.theme-toggle .icon-sun { display: none; }
+.theme-toggle .icon-moon { display: block; }
+.filter-bar { position: relative; z-index: 2; max-width: var(--max-w); margin: 0 auto; padding: 16px 32px; }
+.filter-inner {
+  display: flex; align-items: center; gap: 12px;
+  background: rgba(29,31,44,.5);
+  border: 1px solid var(--border-2);
+  border-radius: var(--radius-pill);
+  padding: 0 20px;
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+}
+.filter-search {
+  flex: 1; background: transparent; border: none; outline: none;
+  padding: 14px 0; font-size: 14px; color: var(--text);
+  font-family: var(--sans);
+}
+.filter-search::placeholder { color: var(--text-3); }
+.filter-count { font-size: 12px; color: var(--text-3); font-family: var(--mono); white-space: nowrap; }
+.main { position: relative; z-index: 2; max-width: var(--max-w); margin: 0 auto; padding: 24px 32px 64px; }
+.filter-noresult { display: none; text-align: center; padding: 60px 20px; color: var(--text-3); font-size: 14px; }
+.section { margin-bottom: 56px; }
+.section-header { text-align: left; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--border-2); }
+.section-title-cn {
+  font-size: 22px; font-weight: 600; color: var(--text);
+  margin-bottom: 6px; letter-spacing: -0.01em;
+}
+.section-title-cn::before {
+  content: ""; display: inline-block;
+  width: 4px; height: 18px;
+  background: var(--gradient-brand); border-radius: 2px;
+  margin-right: 10px; vertical-align: middle;
+  transform: translateY(-2px);
+}
+.section-desc { font-size: 12px; color: var(--text-3); font-family: var(--mono); letter-spacing: 0.04em; }
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 20px; }
+.card {
+  position: relative;
+  background: linear-gradient(180deg, rgba(29,31,44,.7) 0%, rgba(20,18,31,.7) 100%);
+  border: 1px solid var(--border-2); border-radius: var(--radius);
+  padding: 24px;
+  display: flex; flex-direction: column; gap: 12px;
+  transition: all .3s cubic-bezier(.2,.8,.2,1);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  overflow: hidden;
+}
+.card::before {
+  content: ""; position: absolute; inset: 0;
+  background: var(--gradient-glow); opacity: 0;
+  transition: opacity .3s; pointer-events: none;
+  border-radius: var(--radius);
+}
+.card:hover { border-color: var(--border-brand); transform: translateY(-4px); box-shadow: var(--shadow-glow); }
+.card:hover::before { opacity: 1; }
+.card-title { font-size: 17px; font-weight: 600; color: var(--text); line-height: 1.4; margin-top: 0; }
+.card-summary { font-size: 13px; color: var(--text-2); line-height: 1.7; }
+.card-insight {
+  font-size: 12px; color: #C7A8FF;
+  padding: 10px 14px;
+  background: rgba(110,41,246,.08);
+  border-left: 2px solid var(--brand);
+  border-radius: 0 6px 6px 0;
+  line-height: 1.6; margin-top: auto;
+}
+.card-link {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 12px; font-family: var(--mono); color: var(--cyan);
+  margin-top: 4px; transition: gap .2s;
+}
+.card-link:hover { gap: 8px; color: var(--brand-3); }
+.card-link::after { content: "→"; }
+.footer {
+  position: relative; z-index: 2;
+  max-width: var(--max-w); margin: 0 auto;
+  padding: 32px; border-top: 1px solid var(--border);
+}
+.footer-text {
+  text-align: center;
+  font-size: 12px; color: var(--text-3);
+  font-family: var(--mono); letter-spacing: 0.02em; line-height: 1.8;
+}
+@media (max-width: 768px) {
+  .hero { padding: 48px 20px 24px; }
+  .hero-title { font-size: 36px; }
+  .hero-lead { font-size: 14px; }
+  .editorial, .date-switcher, .filter-bar, .main, .footer { padding-left: 20px; padding-right: 20px; }
+  .editorial-inner { flex-direction: column; gap: 10px; padding: 16px 20px; }
+  .cards { grid-template-columns: 1fr; }
+  .section-title-cn { font-size: 18px; }
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge"><span class="dot"></span><span>AI · DESIGN · 硅基流动风格</span></div>
+    <h1 class="hero-title">2026.11.27 的 AIGC 设计日报</h1>
+    <p class="hero-lead">周五把昨天到今早的新稿过了一遍。优设最值得上手的是歸藏把 PPT、图文卡片、去 AI 味和网页排版收进同一个 DeepSeek 插件，淘宝设计则把「设计到开发」试点从约 4 天压到约 3 小时。歸藏另外写了用 MAGI-2 和谷歌 Neon 做「视频转网页、代码转视频」的双向玩法。优设情报拆了豆包工作电脑版新上的「工作台」：按工种打包技能，不再让人自己堆 Skill 列表。工具上还有卡兹克实测 MAGI-2、量子位写的可直接拿去切片打印的 Tripo H3.5，以及 IT之家报道的 Claude 把生成结果装成桌面应用。小红书也收到两条：一条提醒设计系统要写进仓库里给 AI 读，一条觉得「去掉 AI 味的改版」可能成为设计师的新活。</p>
+    <div class="hero-meta">
+      <span>BEIJING · 11.27</span>
+    <span>优设 · 站酷 · 量子位 · 极客公园 · IT之家智能时代 · 小红书</span>
+    </div>
+    <div class="hero-actions">
+      <a class="hero-btn" href="https://www.uisdc.com/hunter" target="_blank" rel="noopener noreferrer">优设AI情报</a>
+    </div>
+  </div>
+</div>
+
+
+<section class="editorial">
+  <div class="editorial-inner">
+    <span class="editorial-badge">主编按语</span>
+    <p class="editorial-text">周五的优设有两头可以一起看。<strong>歸藏把常用设计 Skill 收成 DeepSeek Harness 插件</strong>：PPT、图文卡片、去 AI 味，再加上新的中文网页排版，还多了语气档案和「做同款」作品库，颜色和间距走同一套设计系统。淘宝设计的长文则把大厂里那条老链路写得很清楚：先把规范收成 Skill，再生成可预览的 HTML 原型，同一份东西既能回流成可编辑设计稿，也能转成工程代码部署到预发；小范围试点里，4 个页面、1 名设计师，传统约 4 天被压到约 3 小时。同一天歸藏还写了 MAGI-2 配谷歌 Neon 的双向玩法：先出视频再对照着写滚动官网，或先用代码排出动作灰盒再生成成片，并打包了开源 Skill。优设情报今早这条值得单独看：豆包工作电脑版把多个技能和上下文打包成「工作台」，侧边栏一切，行业技能、快捷任务和说话规矩一起换，入口从「按功能分类」改成「按职业角色路由」。工具栏以卡兹克对 MAGI-2 的实测为主（运镜和指令遵循强、音频一般、1080P 每秒 0.5 元，目前独家在 LibTV，官方说接下来要开源），量子位则写了 VAST 的 Tripo H3.5 Preview，强调网格要闭合、能进切片，而不是只好看贴图。IT之家报道 Claude 可以把 Artifacts 安装成 Mac / Windows 桌面应用，适合把做好的小工具留在菜单栏里反复用。MAGI-2 在量子位、极客公园和 IT之家也有发布稿，与优设实测同题，今天只收了更适合上手的这篇，未再单列。极客公园首页仍是 403，检索兜底看到「织影」影视工具，但正文以本地算力硬件发布为主、可操作细节偏少，未整收。站酷 AI 发现页已打开，列表里看不到明确发布时间，按规则未整收。小红书这次检索成功，收录两条近 72 小时内的公开笔记：一条说 AI 看不见只存在 Figma 里的设计系统，要把规则写进仓库；一条观察到中小企业先用 AI 把页面做上线，设计师随后可能要在不能推倒重来的框架里去掉廉价感。另有一条建议先用 shadcn/ui 定风格再改提示词，和「先给规则、再生成」较近，未再单列。还有两则相关笔记详情页只写了编辑时间、未见首次发布时间，按规则未整收。</p>
+  </div>
+</section>
+
+<nav class="date-switcher" aria-label="日期切换">
+  <div class="date-switcher-inner" id="dateSwitcher"></div>
+</nav>
+
+<nav class="toc">
+    <div class="toc-inner">
+        <span class="toc-label">目录</span><a class="toc-link" href="#sec-practice">AI 实战与教程</a><a class="toc-link" href="#sec-bigtech">大厂 AI 场景</a><a class="toc-link" href="#sec-agent">Agent 与编程实战</a><a class="toc-link" href="#sec-career">职业与观点</a><a class="toc-link" href="#sec-tools">AI 工具与产品</a><button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="切换深色 / 浅色">
+      <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg>
+    </button>
+  </div>
+</nav>
+<div class="filter-bar">
+  <div class="filter-inner">
+    <input type="search" class="filter-search" id="filterSearch" placeholder="搜索标题 / 来源 / 关键词…" aria-label="搜索" oninput="applyFilter()">
+    <span class="filter-count" id="filterCount"></span>
+  </div>
+</div>
+
+<main class="main">
+  <div class="filter-noresult" id="filterNoResult">未找到匹配的内容 🔍</div>
+
+      <section class="section" id="sec-practice">
+    <div class="section-header">
+      <div class="section-title-cn">AI 实战与教程</div>
+      <p class="section-desc">教程、工作流与 Prompt 落地</p>
+    </div>
+    <div class="cards" data-section="practice">
+      <article class="card">
+        <h3 class="card-title">把 PPT、卡片和去 AI 味收进同一个插件，做出来的东西更像一套</h3>
+        <p class="card-summary">优设网（约 23 小时前，11 月 26 日）歸藏发布了 DeepSeek Harness 插件「歸藏设计」（dsh-guizang-design）。他平时被问得最多的，是有没有更「有用」的设计向用法，而不只是好玩的插件。他自己做过的 PPT Skill 和去 AI 味 Skill 加起来已有近 6 万 Star，于是把常用能力收成一个插件，目标是用较低成本做出有设计感、没有 AI 味的内容。插件里目前有 5 个 Skill：已经比较熟的 Guizang PPT（约 2.9 万 Star，这次把杂志风格的 WebGL 背景加了回来，并处理了卡顿）、图文卡片（约 8000 Star），以及大升级过的去 AI 味 Skill Humanizer-zh（约 2.2 万 Star）。重点是新发布的网页排版 Skill guizang-pages-skill：把长文或笔记排成适合阅读的单页，字号、字体和间距按中文阅读做了优化，有「原样」和「解释」两种模式，后者适合读英文或把深奥教程转成网页；也支持导出长图和 PDF。插件独有的「语气档案」，可以在页面里点「从我的 DeepSeek 对话学习」，让去 AI 味之后仍保留你自己的说话方式，数据保存在本地。做成插件的好处还有三层：PPT、卡片和网页排版共用一套设计系统，也可以自定义品牌色；内置现成工作流，比如一篇文章一次出网页、小红书组图、公众号封面和封面矩阵，或把演讲整理成文章并配图；生成过的 PPT、组图和网页会进「我的作品」，满意的可以点「做同款」，连载则可以「做新一期」。安装时直接对 DeepSeek Harness 说帮你安装 dsh-guizang-design 即可，仓库在 GitHub：op7418/dsh-guizang-design。插件内置了字体，断网后生成的内容也能正常查看。</p>
+        <p class="card-insight">去 AI 味如果只删套话，删完往往也不像你；先留下自己的语气档案，再把它收进同一套设计系统里。</p>
+        <a class="card-link" href="https://www.uisdc.com/deepseek-design-plugin" target="_blank" rel="noopener noreferrer">查看原文 · 优设网 · 约23小时前</a>
+      </article>
+      <article class="card">
+        <h3 class="card-title">AI 看不见你的设计系统，问题往往不在提示词</h3>
+        <p class="card-summary">小红书（昨天 11:02，11 月 26 日，北京）XUAN | AI × 设计 写到，自己用 AI Coding 做同一套后台时，三个页面的筛选器 Label 位置出现了三种写法。他判断问题不在提示词，而在于没给 AI 一份可读的工作环境：传统设计系统多半还在 Figma 里，代码仓库却没有变成能和 AI 对话的规则说明书。笔记里给出四层做法：用 AGENTS.md 做全局约定；分层写清规则和代码基础；把业务逻辑锁在业务层，避免污染其他层；再用检查和测试把闭环补上。他也建议先写 3 条视觉底线、补好 README，动手前先搜索再造。结尾强调「划分边界」仍然是设计师的判断，这件事 AI 做不了。和今天淘宝设计那篇「把规范收成 Skill」是同一方向，只是从个人项目里更早暴露出的具体症状：同一套后台，筛选器却对不齐。</p>
+        <p class="card-insight">设计系统如果只活在 Figma 里，AI 在仓库里编码时其实是看不见的；要先写成它每次都会读到的规则。</p>
+        <a class="card-link" href="https://www.xiaohongshu.com/explore/6b07a1490000000018028100?xsec_token=ABP9_FhmgHgvcEZRuhBqm0Dfdmew9oIG5N27UoMqQgvoI=" target="_blank" rel="noopener noreferrer">查看原文 · 小红书 · 昨天</a>
+      </article>
+    </div>
+    </section>
+    <section class="section" id="sec-bigtech">
+    <div class="section-header">
+      <div class="section-title-cn">大厂 AI 场景</div>
+      <p class="section-desc">大厂产品里的设计信号</p>
+    </div>
+    <div class="cards" data-section="bigtech">
+      <article class="card">
+        <h3 class="card-title">淘宝设计把规范收成 Skill：4 个页面，从约 4 天跑到约 3 小时</h3>
+        <p class="card-summary">优设网（昨天，11 月 26 日）淘宝设计团队写了他们跑通的「设计到开发」链路。过去设计师按规范手工搭稿，再交给前端还原，中间最常见的两个问题是重复劳动和规范走样。他们把设计规范、组件资产和业务规则沉淀成「设计 Skill」，让 AI 每次生成时主动加载并遵守这些规则，设计师转向定义规则、描述目标、判断质量和持续校准。主线是：设计资产 → 设计 Skill → AI 生成 HTML UI 原型 → 回流成可编辑设计稿，或转译成符合目标代码库的工程组件，再部署到预发。HTML 原型是枢纽：它不是一张死图，而是可以继续流转的中间产物。Skill 大致分三层：做路由的主文件、规范知识层，以及可执行脚本与素材。从零搭建可以拆成五步：喂原料、搭初版、增补规范层、按导航和结算栏等逐项验证，再对还原不准的地方系统性补规范。踩坑后的硬规则包括：基础规范一律走 token、禁止写死色值；间距和圆角限定在预设梯度内；新规范必须回写到资产文件，否则换个会话就丢了。生成时用「做设计稿的思维」把结构、尺寸、间距和信息层级说清楚，还可以一次出两个对比方案。往下游走时，编码规则不是人工预设，而是 AI 从现有代码库里学到的。小范围试点覆盖 4 个页面、1 名设计师，时间计入全链路，返工和二次校对也算进「AI 方式」：传统「设计—开发—验收」约 4 天被压缩到约 3 小时，大约 15 倍，样式验收提升最明显，因为代码天然符合 token。他们也划了边界：token 体系越完善、组件复用率越高、团队越大，收益越明显；尚在建设期、规范未收敛的应先收敛规范；纯创意类、无法量化为 token 的视觉设计，并不适合这套方法。</p>
+        <p class="card-insight">先把规范写成 AI 每次都会加载的规则，走查才会从「事后改」变成「生成时就不偏」；规范没收敛时，先别急着上全链路。</p>
+        <a class="card-link" href="https://www.uisdc.com/ai-design-workflow-4" target="_blank" rel="noopener noreferrer">查看原文 · 优设网 · 昨天</a>
+      </article>
+      <article class="card">
+        <h3 class="card-title">豆包工作台：别再让用户自己拼 Skill 列表，按工种一键开工</h3>
+        <p class="card-summary">优设情报（约 9 小时前，11 月 26 日晚）龙爪槐守望者拆了「豆包工作」电脑版刚上线的「工作台」。他觉得很多 Skill 很好用，但每次用都得自己再加载一次，换一件活还要重新调教半天。新的工作台把多个技能和相关上下文打包成一个工作台：只要在侧边栏切到对应的工作台，输入框上方就会变成对应的行业技能，连首页快捷任务和 AI 说话规矩也一起换好，点一下就能直接开工。传统软件习惯把插件、提示词、历史记录分成几个独立频道，用户得自己去拼装；工作台则直接以真实工种为一级入口，从「按功能分类」转向「按职业角色路由」。做 AI 产品时，这个减法比把 Skill 名再堆长一截，更接近用户实际开工的方式。</p>
+        <p class="card-insight">Skill 再好，如果每次开工都要先装一次、再调教一次，入口本身就在跟用户作对。</p>
+        <a class="card-link" href="https://www.uisdc.com/hunter/0221690937.html" target="_blank" rel="noopener noreferrer">查看原文 · 优设情报 · 约9小时前</a>
+      </article>
+    </div>
+    </section>
+    <section class="section" id="sec-agent">
+    <div class="section-header">
+      <div class="section-title-cn">Agent 与编程实战</div>
+      <p class="section-desc">Agent 工作流、协同与开发向实践</p>
+    </div>
+    <div class="cards" data-section="agent">
+      <article class="card">
+        <h3 class="card-title">先用视频定视觉，或先用代码排动作：MAGI-2 和 Neon 的双向玩法</h3>
+        <p class="card-summary">优设网（昨天，11 月 26 日）歸藏写了一套把谷歌 Neon 和国产视频模型 MAGI-2 接在一起的玩法。卡兹克、阿真等人已经测过 MAGI-2 的短剧和表演，他这边更关心 Agent 和视频模型能怎么配合。MAGI-2 支持 30 秒 1080P、多图多参混合参考，也吃得下最长约 2 万字的提示词；标价 1080P 每秒 0.5 元，文中提到 LibTV 限时特惠可到每秒 5 分。他先做了几项基础测试：敦煌飞天的大幅度旋转和飘带比较稳，竹林武侠的跟拍运镜不错；还拿一张带色块滑块的 UI 图生成视频，滑块滑到对应色板时场景会跟着变色，说明模型能理解这种逻辑。咖啡店视频里吐小票、盖章和点屏幕时的文字，也少见常见的果冻感和伪影。问题主要有两个：提示词润色有时会偏，音频里背景音乐和动作音效常常只能出来一个。真正要分享的是两套流程。Video to Code：先在 LibTV 用六宫格分镜喂给 MAGI-2 做出一段带图形、飘带和连续转场的视频，再让 Neon 读取配色和动势，写成一镜到底的视差滚动产品官网。他觉得这种滚动中持续变化的效果，只靠提示词让 AI 直接写代码很难一次写好；有了视频当视觉参考，第一版就比较能用，后面只微调了字体排版和个别动画闪烁。MAGI-2 出的视频往往只有音效没有音乐，他还让 Neon 用代码生成电子乐，并把 BPM 跟页面滚动速度连上。Code to Video 则反过来：先让 Neon 写代码生成一段 2D 横版 Boss 战的动作灰盒（跳跃、弹反、顿帧、镜头特写和连招位置），不要带音频以免干扰参考；再在 LibTV 画布里用全能参考，把设定图和这段代码视频合在一起，生成水墨风格的打斗成片。动作不满意就改代码，比一次次重新抽卡更可控，素材也可以复用。他把 MAGI-2 提示词优化方法、LibTV MCP 在 Antigravity 上的适配修复，以及这两套工作流打包进开源 Skill：github.com/op7418/guizang-magi2-skill，装上后可以让 Agent 直接调用。</p>
+        <p class="card-insight">视频便宜了以后，不一定要直接「一句话出成片」；用视频当视觉稿，或用代码当动作稿，往往比纯抽卡更稳。</p>
+        <a class="card-link" href="https://www.uisdc.com/neon-video-workflow" target="_blank" rel="noopener noreferrer">查看原文 · 优设网 · 昨天</a>
+      </article>
+    </div>
+    </section>
+
+    <section class="section" id="sec-career">
+    <div class="section-header">
+      <div class="section-title-cn">职业与观点</div>
+      <p class="section-desc">行业观察、职业路径与设计观点</p>
+    </div>
+    <div class="cards" data-section="career">
+      <article class="card">
+        <h3 class="card-title">AI 先把页面做上线，设计师的新活可能是去掉那股廉价感</h3>
+        <p class="card-summary">小红书（前天，11 月 25 日，新加坡）Peterverse 观察到，不少中小企业已经不再找设计师先画 UI，而是用 AI 生成页面后直接进入开发。产品上线之后，又常常被觉得廉价、没有品牌感。他写到，AI 生成的界面往往一眼就能认出来：卡片、渐变、大圆角、文字旁边堆一排 icon、内容被塞得很满。接下来可能会多出一类改版需求：在已有功能和开发框架还在的前提下，由专业 UI 设计师重新梳理视觉和交互，去掉 AI 味，多一点人味。他也提醒，这类项目并不简单，因为不能让开发把现有页面全部推倒重来。对还在企业里做设计系统的人来说，这和「把规范写给 AI」是一件事的两面：前端先用 AI 铺出来的页面，后面仍然需要人来收口品牌和体验。</p>
+        <p class="card-insight">新活不是再画一套从零开始的稿，而是在不能推倒重来的框架里，把能看出来的 AI 味收掉。</p>
+        <a class="card-link" href="https://www.xiaohongshu.com/explore/6b05185e0000000018029c00?xsec_token=ABsDT8RjAcBAcIZZrTpPEG_joQhIDCfvpv1o5XQtSp-H4=" target="_blank" rel="noopener noreferrer">查看原文 · 小红书 · 前天</a>
+      </article>
+    </div>
+    </section>
+    <section class="section" id="sec-tools">
+    <div class="section-header">
+      <div class="section-title-cn">AI 工具与产品</div>
+      <p class="section-desc">新工具、产品动态与能力边界</p>
+    </div>
+    <div class="cards" data-section="tools">
+      <article class="card">
+        <h3 class="card-title">MAGI-2 实测：运镜很大胆，音频一般，价格大约是同画质旗舰的十分之一</h3>
+        <p class="card-summary">优设网（昨天，11 月 26 日）数字生命卡兹克深度实测了 Sand.ai 刚发布的视频模型 MAGI-2。这是一个 480B 的全模态视频模型，单次最多支持 20 个图片、音频、视频参考，也支持局部编辑，最长可生成 30 秒。他一开始并不看好，测完后认为画质大约能到 Seedance 2.3 左右的水准，还到不了当前的 Seedance 2.5；但同样 1080P，价格是每秒 0.5 元，大约是 Seedance 2.5 的十分之一，也低于 Seedance 2.5 Flash。他自己总结：音频大概是 Seedance 2.0 那种「AI 短剧」的感觉；画面质感逊于 2.5，但运镜、提示词遵循和物理表现都很强，废片率极低，抽卡相对轻松。为了测运镜，他写了一段从侧面跟拍大衣女模特、绕到头顶再收成城市远景的一镜到底提示词，MAGI-2 一次跑出来的镜头很大胆，还在某些角度做了降速停顿。他拿其他模型做了小范围盲测，同事也更偏向这一条。更复杂的「纸飞机穿过教学楼」案例里，楼梯间的空间结构目前所有模型都很难稳住，他把楼梯间改成敞开的窗户之后就稳定得多，指令遵循仍然明显。目前模型独家上线 LibTV；文中还提到，Sand.ai 表示接下来要把 MAGI-2 开源。量子位、极客公园和 IT之家同日也有发布稿，能力介绍一致（4 到 30 秒、最多 20 份素材、可按脚本控制出场时机、支持二次编辑），今天以这篇实测为主，发布稿不再单列。</p>
+        <p class="card-insight">如果更在乎运镜和提示词是否听得懂，MAGI-2 值得先在 LibTV 试试；如果更在乎人声和音效成片，先别对音频期望太高。</p>
+        <a class="card-link" href="https://www.uisdc.com/ai-video-baseline" target="_blank" rel="noopener noreferrer">查看原文 · 优设网 · 昨天</a>
+      </article>
+      <article class="card">
+        <h3 class="card-title">Tripo H3.5：一图出的雕塑，网格要能进切片，而不只是贴图好看</h3>
+        <p class="card-summary">量子位（昨晚，11 月 26 日 20:39）介绍了 VAST 刚发布的新一代高精度 AI 3D 基座模型 Tripo H3.5 Preview，已上线 Tripo Studio 国际版（studio.tripo3d.ai）。作者先用 GPT-6.2 Astra 冲击一件结构很密的巴洛克群像雕塑，发现它其实调用了 VAST 的开源模型 TripoSR；强制只准调用 Blender 自己建模后，细节掉了一大截。换上 H3.5 Preview，复杂结构才稳住。和上一代 H3.1 相比，它在复杂结构还原、精细几何、输入输出对齐，以及给看不到的侧面做合理推断上都有提升。在资深 3D 美术师对 192 组素模案例的盲评中，H3.5 Preview 拿下 82 次第一，占比 42.8%，是第二名的 2.3 倍。去掉贴图后，它对 3D 浮雕文字的识别率约 90.7%，明显高于 H3.1 的 46.1%。文章真正想强调的，是「好看」不等于「能用」：把模型丢进切片软件或 DCC 工具烘焙时，常见问题是非流形、自相交、局部破损、细节粘连；贴图画出来的字和浮雕，网格里其实没有对应的立体结构。H3.5 Preview 的目标是直接生成表面完整闭合的网格（原生水密体），减少人工修模，并让模型能进入切片和支撑设置。同步上线的还有可打印检测与自动修复：按目标打印尺寸检查薄壁、水密性和非流形边，并支持一键修孔、修非流形边，以及按工艺调整壁厚。作者用科幻护甲接缝、武将狮首肩甲和龙首鳞片这类案例说明，打印出的实物能留下比较清楚的轮廓和层次。对设计师来说，如果只是要一张渲染图，意义有限；如果模型还要拿去打印或进制作管线，更值得看它的几何是否闭合、细节是不是真刻在网格上。</p>
+        <p class="card-insight">3D 生成最容易被渲染图骗到：贴图漂亮，不代表网格闭合、能切片、能进管线。</p>
+        <a class="card-link" href="https://www.qbitai.com/2026/11/512981.html" target="_blank" rel="noopener noreferrer">查看原文 · 量子位 · 昨晚</a>
+      </article>
+      <article class="card">
+        <h3 class="card-title">Claude 可以把做好的小工具，安装成 Mac 和 Windows 桌面上的独立应用</h3>
+        <p class="card-summary">IT之家（前天，11 月 25 日 7:17）报道，Anthropic 为 Claude 的交互式 Artifacts 推出了「安装为应用」（Install as app）。生成出来的应用可以安装到 macOS 和 Windows 桌面，拥有独立的工具栏图标，使用体验接近把网页应用装到电脑上，不必每次再从浏览器标签页里翻出来。权限上可以选默认模式，让它像普通浏览器标签那样运行；也可以额外允许发送通知、拦截键盘快捷键，以及显示在其他窗口之上。还可以授予完整的计算机访问权限，不同权限会影响它能调用的系统功能和可执行的操作。该功能目前处于 Beta，正在向 Mac 和 Windows 桌面用户逐步开放。对设计师来说，如果经常用 Claude 做出可点的原型、对照工具或小面板，装到桌面后更方便反复打开和演示，而不必依赖某一条聊天记录。</p>
+        <p class="card-insight">把生成结果留在桌面图标里，比把它埋在聊天记录里，更接近「这个工具我以后还要用」。</p>
+        <a class="card-link" href="https://www.ithome.com/1/031/911.htm" target="_blank" rel="noopener noreferrer">查看原文 · IT之家 · 前天</a>
+      </article>
+    </div>
+    </section>
+</main>
+
+<footer class="footer">
+  <p class="footer-text">设计师 AIGC 日报 · 2026.11.27 · 北京时间<br>信源：优设网 / 优设情报 / 站酷 / 量子位 / 极客公园 / IT之家·智能时代 / 小红书（尽力） · 共 9 条精选资讯</p>
+</footer>
+
+<script>
+function getReportDate() {
+  var m = document.title.match(/(\d{4})\.(\d{1,2})\.(\d{1,2})/);
+  if (m) return new Date(+m[1], +m[2] - 1, +m[3]);
+  return new Date();
+}
+function shanghaiTodayParts() {
+  var parts = {};
+  new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Asia/Shanghai',
+    year: 'numeric', month: 'numeric', day: 'numeric'
+  }).formatToParts(new Date()).forEach(function (p) { parts[p.type] = p.value; });
+  return { y: +parts.year, m: +parts.month, d: +parts.day };
+}
+var reportDate = getReportDate();
+var reportKey = reportDate.getFullYear() + '.' + (reportDate.getMonth() + 1) + '.' + reportDate.getDate();
+var cal = shanghaiTodayParts();
+var calendarKey = cal.y + '.' + cal.m + '.' + cal.d;
+var calendarToday = new Date(cal.y, cal.m - 1, cal.d);
+var container = document.getElementById('dateSwitcher');
+if (container) {
+  var days = [];
+  for (var i = 6; i >= 0; i--) {
+    var dt = new Date(calendarToday);
+    dt.setDate(calendarToday.getDate() - i);
+    var key = dt.getFullYear() + '.' + (dt.getMonth()+1) + '.' + dt.getDate();
+    days.push({
+      label: (dt.getMonth()+1) + '.' + dt.getDate(),
+      key: key,
+      href: key + '日报.html',
+      isReport: key === reportKey,
+      isCalendarToday: key === calendarKey,
+      isFuture: dt > calendarToday
+    });
+  }
+  var leftArrow = document.createElement('span');
+  leftArrow.className = 'date-nav-arrow';
+  leftArrow.textContent = '◀';
+  container.appendChild(leftArrow);
+  days.forEach(function(day) {
+    var pill = document.createElement('a');
+    pill.className = 'date-pill';
+    pill.textContent = day.label;
+    if (day.isReport) pill.classList.add('active');
+    if (day.isFuture) pill.classList.add('future');
+    pill.href = day.isCalendarToday ? 'index.html' : day.href;
+    container.appendChild(pill);
+  });
+}
+function applyFilter() {
+  var q = (document.getElementById('filterSearch').value || '').toLowerCase().trim();
+  var cards = document.querySelectorAll('.card');
+  var visible = 0;
+  cards.forEach(function(c) {
+    if (!q) { c.style.display = ''; visible++; return; }
+    var text = c.textContent.toLowerCase();
+    if (text.indexOf(q) >= 0) { c.style.display = ''; visible++; }
+    else { c.style.display = 'none'; }
+  });
+  var sections = document.querySelectorAll('.section');
+  var nr = document.getElementById('filterNoResult');
+  var anyVisible = 0;
+  sections.forEach(function(sec) {
+    var secCards = sec.querySelectorAll('.card');
+    var hasVisible = false;
+    secCards.forEach(function(c) { if (c.style.display !== 'none') hasVisible = true; });
+    sec.style.display = (hasVisible || !q) ? '' : 'none';
+    if (hasVisible) anyVisible++;
+  });
+  nr.style.display = (!q || anyVisible > 0) ? 'none' : 'block';
+  var fc = document.getElementById('filterCount');
+  fc.textContent = q ? (visible + ' / ' + cards.length) : '';
+}
+function toggleTheme() {
+  var isLight = document.body.classList.toggle('light');
+  try { localStorage.setItem('aigc-theme', isLight ? 'light' : 'dark'); } catch (e) {}
+  syncToggleIcon(isLight);
+}
+function syncToggleIcon(isLight) {
+  var btn = document.getElementById('themeToggle');
+  if (!btn) return;
+  btn.querySelector('.icon-moon').style.display = isLight ? 'none' : 'block';
+  btn.querySelector('.icon-sun').style.display = isLight ? 'block' : 'none';
+  btn.setAttribute('aria-label', isLight ? '切换深色模式' : '切换浅色模式');
+}
+(function() {
+  var saved = null;
+  try { saved = localStorage.getItem('aigc-theme'); } catch (e) {}
+  var isLight = saved === 'light' || (saved === null && window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches);
+  if (isLight) document.body.classList.add('light');
+  syncToggleIcon(isLight);
+})();
+applyFilter();
+</script>
+</body>
+
+</html>
