@@ -1,0 +1,105 @@
+{
+  "date": "2026.11.27",
+  "total_cards": 9,
+  "section_counts": {
+    "sec-practice": 2,
+    "sec-bigtech": 2,
+    "sec-agent": 1,
+    "sec-career": 1,
+    "sec-tools": 3
+  },
+  "editorial": "周五：歸藏 DeepSeek 设计插件把 PPT/卡片/去AI味/网页排版收成一套；淘宝设计试点 4 页从约 4 天到约 3 小时；优设情报豆包工作台按工种打包技能；歸藏 MAGI-2×Neon 视频与代码双向玩法；卡兹克实测 MAGI-2；量子位 Tripo H3.5 可进切片；IT之家 Claude Artifacts 可装成桌面应用。小红书收录两条：设计系统要写进仓库、去 AI 味改版或成新活。站酷无可见发布时间未整收；极客公园首页 403，织影偏硬件发布未整收；MAGI-2 发布稿与实测同题未再单列。",
+  "cards": [
+    {
+      "section": "sec-practice",
+      "title": "把 PPT、卡片和去 AI 味收进同一个插件，做出来的东西更像一套",
+      "url": "https://www.uisdc.com/deepseek-design-plugin",
+      "source": "优设网 · 约23小时前"
+    },
+    {
+      "section": "sec-practice",
+      "title": "AI 看不见你的设计系统，问题往往不在提示词",
+      "url": "https://www.xiaohongshu.com/explore/6b07a1490000000018028100?xsec_token=ABP9_FhmgHgvcEZRuhBqm0Dfdmew9oIG5N27UoMqQgvoI=",
+      "source": "小红书 · 昨天"
+    },
+    {
+      "section": "sec-bigtech",
+      "title": "淘宝设计把规范收成 Skill：4 个页面，从约 4 天跑到约 3 小时",
+      "url": "https://www.uisdc.com/ai-design-workflow-4",
+      "source": "优设网 · 昨天"
+    },
+    {
+      "section": "sec-bigtech",
+      "title": "豆包工作台：别再让用户自己拼 Skill 列表，按工种一键开工",
+      "url": "https://www.uisdc.com/hunter/0221690937.html",
+      "source": "优设情报 · 约9小时前"
+    },
+    {
+      "section": "sec-agent",
+      "title": "先用视频定视觉，或先用代码排动作：MAGI-2 和 Neon 的双向玩法",
+      "url": "https://www.uisdc.com/neon-video-workflow",
+      "source": "优设网 · 昨天"
+    },
+    {
+      "section": "sec-career",
+      "title": "AI 先把页面做上线，设计师的新活可能是去掉那股廉价感",
+      "url": "https://www.xiaohongshu.com/explore/6b05185e0000000018029c00?xsec_token=ABsDT8RjAcBAcIZZrTpPEG_joQhIDCfvpv1o5XQtSp-H4=",
+      "source": "小红书 · 前天"
+    },
+    {
+      "section": "sec-tools",
+      "title": "MAGI-2 实测：运镜很大胆，音频一般，价格大约是同画质旗舰的十分之一",
+      "url": "https://www.uisdc.com/ai-video-baseline",
+      "source": "优设网 · 昨天"
+    },
+    {
+      "section": "sec-tools",
+      "title": "Tripo H3.5：一图出的雕塑，网格要能进切片，而不只是贴图好看",
+      "url": "https://www.qbitai.com/2026/11/512981.html",
+      "source": "量子位 · 昨晚"
+    },
+    {
+      "section": "sec-tools",
+      "title": "Claude 可以把做好的小工具，安装成 Mac 和 Windows 桌面上的独立应用",
+      "url": "https://www.ithome.com/1/031/911.htm",
+      "source": "IT之家 · 前天"
+    }
+  ],
+  "sources_attempted": [
+    "优设网",
+    "优设情报",
+    "站酷",
+    "量子位",
+    "极客公园",
+    "IT之家智能时代",
+    "小红书"
+  ],
+  "sources_notes": {
+    "优设网": "成功，收录歸藏设计插件、淘宝设计全链路、MAGI-2 实测、Neon×MAGI-2 双向玩法 Skill",
+    "优设情报": "成功，收录豆包工作台；Claude Picker、StageFlow 已在昨日日报，未再收",
+    "站酷": "发现页已打开并看到条目，但列表与正文均无明确发布时间，按规则未整收",
+    "量子位": "成功收录 Tripo H3.5 Preview；MAGI-2 发布稿与优设实测同题未再收",
+    "极客公园": "首页仍 403，专栏与检索兜底；MAGI-2 上线 RunningHub 与优设实测同题未再收；威云创达「织影」一篇以本地算力硬件发布为主、可操作细节偏少，未整收",
+    "IT之家智能时代": "成功收录 Claude Artifacts「安装为应用」；MAGI-2 发布稿与优设实测同题未再收",
+    "小红书": "成功收录两条 72 小时内公开笔记（设计系统要写进仓库、去 AI 味改版或成新活）；shadcn 定风格一条与主题接近未再单列；两则相关笔记详情页只有编辑时间、未见首次发布时间，未整收"
+  },
+  "sources_failed": [],
+  "notes": "72h 窗口起始 2026-11-24 07:30 CST。站酷与极客公园均已尝试，未因失败挡发刊。小红书经浏览器检索成功。",
+  "output_paths": {
+    "daily_html": "/workspace/AI日报/2026.11.27日报.html",
+    "ascii_html": "/workspace/AI日报/2026.11.27.html",
+    "summary_json": "/workspace/AI日报/2026.11.27_summary.json",
+    "index": "/workspace/AI日报/index.html"
+  },
+  "scripts": {
+    "batch_convert_to_sf.py": "SKIP minimal SF for 2026.11.27日报.html (expected); index Shanghai redirector OK",
+    "dedupe_sections.py": "SKIP no sec-top (expected)",
+    "check_cross_day_dupes.py": "PASS no cross-day dupes"
+  },
+  "retention_deleted": [
+    "2026.11.20_summary.json",
+    "2026.11.20日报.html",
+    "2026.11.20.html"
+  ],
+  "html_ready_for_chat_attach": true
+}
